@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta property="og:image" content="https://cdn.anandsreekumar.com/images/writeup/ssrf.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blind SSRF via DNS Rebinding</title>
+    <meta name="description" content="A write-up demonstrating Blind SSRF via DNS rebinding on a HackerOne program, enabling internal host enumeration without direct response leakage.">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000;
+            color: #eee;
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #ffcc00;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+
+        h2 {
+            color: #ffcc00;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+            margin-top: 40px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+
+        code {
+            background-color: #111;
+            color: #0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        pre {
+            background-color: #111;
+            color: #0f0;
+            padding: 10px;
+            overflow-x: auto;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+        }
+
+        ol {
+            background-color: #111;
+            border-left: 4px solid #ffcc00;
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        ol li {
+            margin-bottom: 10px;
+        }
+
+        ul {
+            margin-top: 10px;
+        }
+
+        a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Blind SSRF via DNS Rebinding</h1>
+        </header>
+
+        <p><strong>Blind SSRF via DNS rebinding</strong> is a technique where an attacker leverages a server’s backend URL-fetching functionality and uses DNS tricks to pivot into internal systems. The DNS rebinding part works by resolving an attacker-controlled domain (e.g., <code>payload.rbndr.us</code>) to a public IP on the first lookup, and then switching to an internal IP (e.g., <code>127.0.0.1</code> or <code>192.168.x.x</code>) once the DNS cache expires. This bypasses network-layer protections like IP whitelisting or NAT boundaries.</p>
+
+        <p>The "blind" part refers to the lack of direct response from the vulnerable server. The attacker infers internal access by monitoring side channels — such as response timing, status codes, or connection failures.</p>
+
+        <p>In this case, while testing the endpoint <code>https://api.target.com/vendor/v3/external_registry</code>, I supplied a rebinding payload in the <code>endpoint</code> parameter and used timing analysis to enumerate internal IPs. The results indicated the server made backend requests and likely resolved internal addresses.</p>
+
+        <h2>Steps to Reproduce</h2>
+        <ol>
+            <li>Capture a request to: <code>https://api.target.com/vendor/v3/external_registry</code></li>
+            <li>Generate a payload using: <a href="https://lock.cmpxchg8b.com/rebinder.html" target="_blank">https://lock.cmpxchg8b.com/rebinder.html</a><br>
+                Example: <code>7f000001.ac14000a.rbndr.us</code></li>
+            <li>Insert the payload into the <code>endpoint</code> parameter of the POST body.</li>
+            <li>Send the request to Burp Intruder. Use the “Positions” tab to select two characters from the rebinding subdomain.</li>
+            <li>Under “Payloads”, use numbers 01–154, representing <code>192.168.0.1</code> through <code>192.168.0.153</code>.</li>
+            <li>Launch the attack and monitor the “Response Completed” time. Increased latency suggests the server resolved or connected to internal targets.</li>
+        </ol>
+
+        <img src="https://cdn.anandsreekumar.com/images/writeup/intruder.png" alt="Intruder Result Screenshot">
+        <p align="center">response timings</p>
+        <img src="https://cdn.anandsreekumar.com/images/writeup/payload.png" alt="Payload Screenshot">
+        <p align="center">rebinding payloads</p>
+
+        <h2>Impact</h2>
+        <p>This vulnerability allowed internal IP enumeration via DNS rebinding and blind SSRF behavior. Although no response data was leaked, the ability to interact with internal infrastructure is a stepping stone to more serious attacks — especially when combined with metadata service access or open ports on internal services.</p>
+
+        <h2>Timeline</h2>
+        <ul>
+            <li>March 28, 2022 – Initial report submitted</li>
+            <li>March 30, 2022 – First response from program; 192.168.0.0/24 not in use</li>
+            <li>March 31, 2022 – Retested using Class A IPs; consistent timing anomalies observed</li>
+            <li>April 1, 2022 – Report accepted and bounty awarded</li>
+        </ul>
+
+        <footer>
+            Thanks, <br> Anand
+        </footer>
+    </div>
+</body>
+</html>
