@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta property="og:image" content="https://cdn.anandsreekumar.com/images/writeup/pkgjson.png" />
+    <meta property="og:image" content="/assets/images/writeup/pkgjson.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Remote Code Execution via Dependency Confusion</title>
     <meta name="description" content="How a dependency confusion vulnerability on a HackerOne private program led to remote code execution, and the steps involved in exploiting it.">
@@ -51,14 +51,14 @@
 
         <p>While running fuff on one of orgxyz's subdomains, I stumbled upon a disclosed <code>package-lock.json</code> file, specifically <code>engineering.orgxyz.com/package-lock.json</code>.</p>
 
-        <img src="https://cdn.anandsreekumar.com/images/writeup/pkglck.png" alt="Package Lock File">
+        <img src="/assets/images/writeup/pkglck.png" alt="Package Lock File">
 
         <p>The file contained over 100 packages, sparking the idea to test for dependency confusion.</p>
         <p><i>What is dependency confusion? <p>Dependency confusion, also known as "substitution attacks," is a sneaky tactic hackers use to trick developers. They upload malicious code to public libraries, pretending it's a trusted internal one. When developers use these libraries, they accidentally download the harmful code. It's like getting fake medicine instead of the real thing. </p> <a href="https://medium.com/@alex.birsan/dependency-confusion-4a5d60fec610">Read more...</a></i></p>
 
         <p>Thus, the challenge was to identify missing NPM packages. Fortunately, the <code>package-lock.json</code> included NPM registry URLs, prompting me to ping each URL to detect missing packages.</p>
 
-        <img src="https://cdn.anandsreekumar.com/images/writeup/regurls.png" alt="urls">
+        <img src="/assets/images/writeup/regurls.png" alt="urls">
 
         <p>I sought assistance from ChatGPT to obtain a Bash script that would provide the status code after visiting each URL. A 404 status code indicated a missing package, notably <strong>orgxyz-css-1.0.4.tgz</strong>.</p>
 
@@ -70,24 +70,24 @@
             <li>Create an account on npmjs.com.</li>
 
             <li>Develop an <code>index.js</code> script to send a ping back to a canary token or Burp collaborator URL if executed.</li>
-            <img src="https://cdn.anandsreekumar.com/images/writeup/indexjs.png" alt="index.js file">
+            <img src="/assets/images/writeup/indexjs.png" alt="index.js file">
             <li>Compose a <code>package.json</code> specifying the missing package name. Ensure to use a higher package version for automatic pull.</li>
 
-            <img src="https://cdn.anandsreekumar.com/images/writeup/pkgjson.png" alt="Package.json">
+            <img src="/assets/images/writeup/pkgjson.png" alt="Package.json">
 
             <li>Publish the package and await triggered canary tokens.</li>
 
             <li>About three hours later, I received an email notification confirming the execution of my code on orgxyz's system.</li>
 
-            <img src="https://cdn.anandsreekumar.com/images/writeup/cantoken.png" alt="Canary Token Triggered">
+            <img src="/assets/images/writeup/cantoken.png" alt="Canary Token Triggered">
 
             <li>Next morning, I decided to compose another <code>index.js</code> file to execute system commands and extract information, forwarding them to a Burp collaborator URL.</li>
 
             <li>Uploaded the new <code>index.js</code> and monitored responses on my Burp collaborator. Ping backs with command execution outputs were received approximately an hour later.</li>
-<img src="https://cdn.anandsreekumar.com/images/writeup/collaburl2.png" alt="Canary Token Triggered">
+<img src="/assets/images/writeup/collaburl2.png" alt="Canary Token Triggered">
             <li>Upon verifying all details, report the vulnerability to the private program. Draft the report and send it once the issue is resolved, resulting in a bounty award.</li>
 
-            <!-- <img src="https://cdn.anandsreekumar.com/images/writeup/h1pgm.png" alt="Bounty Awarded"> -->
+            <!-- <img src="/assets/images/writeup/h1pgm.png" alt="Bounty Awarded"> -->
         </ol>
 
         <h2>Timeline:</h2>
