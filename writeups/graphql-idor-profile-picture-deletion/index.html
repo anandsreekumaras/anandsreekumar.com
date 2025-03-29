@@ -101,7 +101,7 @@
         <p>Unlike REST APIs, GraphQL often returns large, nested response objects. In this case, a query like <code>getClassMembers</code> exposed each user's <code>profilePictureUrl</code>, from which the <code>profile_picture_id</code> could be extracted by parsing the URL. This ID wasn't scoped per user, and the backend didn’t verify that the current user had ownership of the referenced media object when reusing it in a mutation.</p>
 
         <h2>Steps to Reproduce</h2>
-        <ol>
+       <code>
             <li>Create two accounts:
                 <ul>
                     <li><strong>User A</strong> (victim)</li>
@@ -150,7 +150,7 @@ mutation {{
 }}
 </pre>
 Or performs a delete mutation if supported by the schema. Since the object is shared, it is removed globally — affecting the victim as well.</li>
-        </ol>
+        </code>
 
         <h2>Timeline</h2>
         <ul>
