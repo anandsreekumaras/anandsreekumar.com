@@ -8,7 +8,7 @@ title: Home
   {% include work.html %}
   {% include writeups.html %}
   {% include tools.html %}
-  {% include talks.html %}
+  {% include miscellaneous.html %}
   {% include contact.html %}
 </main>
 <p class="text-center">&copy; {{ site.time | date: '%Y' }} anand sreekumar</p>
