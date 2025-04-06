@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: anand | cybersecurity engineer
 ---
 <html lang="en">
 <head>
@@ -114,22 +114,22 @@ title: Home
       <h2 class="text-center">write-ups</h2>
       <ul>
          <li>
-          <a href="writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">
+          <a href="/_posts/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">
              cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br>
           <small>march 2025</small>
         </li>
         <li>
-          <a href="/writeups/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">
+          <a href="/_posts/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">
             remote code execution via dependency confusion</a><br>
           <small>march 2024</small>
         </li>
          <li>
-          <a href="/writeups/graphql-idor-profile-picture-deletion" target="_blank">
+          <a href="/_posts/graphql-idor-profile-picture-deletion" target="_blank">
             abusing graphql idor to delete another user's profile picture</a><br>
           <small>july 2022</small>
         </li>
          <li>
-          <a href="/writeups/blind-ssrf-via-dns-rebinding" target="_blank">
+          <a href="/_posts/blind-ssrf-via-dns-rebinding" target="_blank">
             blind ssrf via dns rebinding</a><br>
           <small>april 2022</small>
         </li>
