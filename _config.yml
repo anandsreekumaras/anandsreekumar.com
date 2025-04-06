@@ -1,0 +1,10 @@
+title: Anand Sreekumar
+email: mail@anandsreekumar.com
+description: >-
+  cybersecurity engineer from thiruvananthapuram
+baseurl: ""
+url: "https://anandsreekumar.com"
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap

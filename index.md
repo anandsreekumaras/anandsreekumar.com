@@ -1,3 +1,8 @@
+---
+layout: default
+title: Home
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -155,3 +160,4 @@
     <p class="text-center">&copy; 2025 anand sreekumar</p>
 </body>
 </html>
+
