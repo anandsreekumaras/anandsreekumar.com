@@ -24,7 +24,7 @@ jobs:
           python-version: '3.11'
 
       - name: 📦 Install dependencies
-        run: pip install beautifulsoup4 requests
+        run: pip install 'beautifulsoup4[lxml]' requests
 
       - name: 🛠️ Generate sitemap
         run: python scripts/generate_sitemap.py
@@ -36,4 +36,3 @@ jobs:
           git add sitemap.xml
           git diff --cached --quiet || git commit -m "Update sitemap.xml"
           git push
-
