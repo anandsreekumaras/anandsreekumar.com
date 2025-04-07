@@ -1,0 +1,39 @@
+name: Generate Sitemap
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "writeups/**"
+      - "scripts/generate_sitemap.py"
+      - "index.html"
+      - "robots.txt"
+
+jobs:
+  generate-sitemap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: pip install beautifulsoup4 requests
+
+      - name: 🛠️ Generate sitemap
+        run: python scripts/generate_sitemap.py
+
+      - name: 📤 Commit updated sitemap.xml
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add sitemap.xml
+          git diff --cached --quiet || git commit -m "Update sitemap.xml"
+          git push
+
