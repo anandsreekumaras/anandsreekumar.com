@@ -21,27 +21,27 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
   <style>
     body {
-      background-color: #000;
-      color: #00ff00;
+      background-color: #000000;
+      color: #ffffff;
       font-family: 'Fira Code', monospace;
       font-size: 16px;
       margin: 0;
       text-transform: lowercase;
     }
     h1 {
-      font-size: 28px;
-      font-weight: 500;
+      font-size: 30px;
+      font-weight: 600;
     }
     h2 {
-      font-size: 20px;
+      font-size: 22px;
       margin-bottom: 12px;
-      border-bottom: 2px dashed #00ff00;
+      border-bottom: 2px solid #ffffff;
       display: inline-block;
       padding-bottom: 4px;
     }
     p, li, a, small {
       font-size: 16px;
-      line-height: 1.5;
+      line-height: 1.6;
     }
     section {
       padding: 30px 0;
@@ -51,13 +51,13 @@
       padding-left: 0;
     }
     li {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     a {
-      color: #00ff00;
+      color: #ffffff;
       text-decoration: none;
       position: relative;
-      transition: color 0.2s;
+      transition: color 0.3s ease;
     }
     a::after {
       content: '';
@@ -66,23 +66,26 @@
       height: 1px;
       bottom: 0;
       left: 0;
-      background-color: #00ff00;
-      transition: width 0.2s;
+      background-color: #e0e0e0;
+      transition: width 0.3s ease;
     }
     a:hover::after {
       width: 100%;
     }
     a:hover {
-      color: #00cc00;
+      color: #e0e0e0;
     }
     .social-icons a {
-      margin: 0 12px;
+      margin: 0 15px;
       font-size: 18px;
     }
+    .social-icons a[aria-label]::after {
+      content: none; /* Remove underline for social icons */
+    }
     .container {
-      max-width: 750px;
+      max-width: 800px;
       margin: auto;
-      padding: 0 12px;
+      padding: 0 15px;
     }
     .text-center {
       text-align: center;
@@ -94,42 +97,30 @@
       50% { opacity: 0; }
     }
     header {
-      padding: 50px 12px 20px;
+      padding: 60px 15px 20px;
       text-align: center;
-      background: linear-gradient(to bottom, #000, #001100);
-      border-bottom: 2px solid #00ff00;
+      background: #000000;
+      border-bottom: 2px solid #cccccc;
     }
-    .ascii {
-      font-size: 12px;
-      line-height: 1;
-      opacity: 0.3;
+    section {
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
       margin-bottom: 20px;
-      white-space: pre;
+      border-radius: 5px;
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <div class="ascii">
-      .-""""""""-.
-     /   root@anand  \
-    : ,          .-.  :
-    : : ,       /   \ :
-    : : : ,    /     \:
-    : : : : , /_______\
-    : : : : :         :
-    :_: :_: :_________:
-    </div>
-    <h1 style="color: #00ff00;">root@anand<span class="blink_me">_</span></h1>
+    <h1 style="color: #ffffff;">root@anand<span class="blink_me">_</span></h1>
     <p>cybersecurity engineer | bug bounty hunter | hybrid athlete</p>
     <div class="social-icons">
-      <a href="https://linkedin.com/in/anandsreekumaras" target="_blank">linkedin</a>
-      <a href="https://twitter.com/anandsreekumar_" target="_blank">twitter</a>
-      <a href="https://github.com/anandsreekumaras" target="_blank">github</a>
-      <a href="https://facebook.com/anandsreekumaras" target="_blank">facebook</a>
-      <a href="https://instagram.com/anandsreekumaras/" target="_blank">instagram</a>
-      <a href="https://stackoverflow.com/users/5317663/anand-a-s" target="_blank">stackoverflow</a>
+      <a href="https://linkedin.com/in/anandsreekumaras" target="_blank" aria-label="LinkedIn profile">linkedin</a>
+      <a href="https://twitter.com/anandsreekumar_" target="_blank" aria-label="Twitter profile">twitter</a>
+      <a href="https://github.com/anandsreekumaras" target="_blank" aria-label="GitHub profile">github</a>
+      <a href="https://facebook.com/anandsreekumaras" target="_blank" aria-label="Facebook profile">facebook</a>
+      <a href="https://instagram.com/anandsreekumaras/" target="_blank" aria-label="Instagram profile">instagram</a>
+      <a href="https://stackoverflow.com/users/5317663/anand-a-s" target="_blank" aria-label="Stack Overflow profile">stackoverflow</a>
     </div>
   </header>
   <main class="container">
