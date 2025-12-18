@@ -22,7 +22,7 @@
       color: #e0e0e0;
       font-family: 'Fira Code', monospace;
       font-size: 15px;
-      line-height: 1.2;
+      line-height: 1.1;
       margin: 0;
       padding: 20px;
       text-transform: lowercase;
@@ -42,22 +42,34 @@
       font-weight: 400;
       margin-top: 20px;
       margin-bottom: 0;
-      display: flex;
+      display: inline-flex;
       flex-direction: column;
-      align-items: flex-start;
-      line-height: 0.6; 
+      line-height: 0.5;
     }
 
     h1::after {
-      content: "================";
+      content: "";
+      height: 15px;
+      width: 100%;
+      background: repeating-linear-gradient(90deg, #e0e0e0, #e0e0e0 9px, transparent 9px, transparent 9px);
+      mask-image: linear-gradient(to bottom, transparent 45%, black 45%, black 55%, transparent 55%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 45%, black 45%, black 55%, transparent 55%);
+      background-size: 1ch 100%;
+      background-repeat: repeat-x;
+      content: "==================================================";
+      overflow: hidden;
+      white-space: nowrap;
+      margin-top: 2px;
       line-height: 1;
-      margin-top: -2px;
     }
 
     h2::after {
-      content: "----------------";
+      width: 100%;
+      content: "--------------------------------------------------";
+      overflow: hidden;
+      white-space: nowrap;
       line-height: 1;
-      margin-top: -2px;
+      margin-top: 2px;
     }
 
     p, li, a, small {
@@ -76,12 +88,15 @@
 
     section {
       margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     ul {
       list-style-type: none;
       padding-left: 0;
-      margin-top: 8px;
+      margin-top: 5px;
     }
 
     li {
@@ -118,7 +133,7 @@
     }
 
     .content-block {
-      margin-top: 8px;
+      margin-top: 5px;
     }
 
     @media (max-width: 600px) {
@@ -154,7 +169,7 @@
     <section id="writeups">
       <h2>write_ups</h2>
       <ul>
-        <li><a href="writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br><small>march 2025</small></li>
+        <li><a href="/writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br><small>march 2025</small></li>
         <li><a href="/writeups/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">remote code execution via dependency confusion</a><br><small>march 2024</small></li>
         <li><a href="/writeups/graphql-idor-profile-picture-deletion" target="_blank">abusing graphql idor to delete another user's profile picture</a><br><small>july 2022</small></li>
         <li><a href="/writeups/blind-ssrf-via-dns-rebinding" target="_blank">blind ssrf via dns rebinding</a><br><small>april 2022</small></li>
@@ -169,7 +184,7 @@
       </ul>
     </section>
 
-      <section id="talks">
+    <section id="talks">
       <h2>miscellaneous</h2>
       <div class="content-block">
         <p><b>#</b> first prize winners of <a href="https://india.c0c0n.org/2024/" target="_blank">c0c0n 2024</a> ctf competition <a href="https://www.thehindubusinessline.com/info-tech/ust-clinches-top-three-positions-in-capture-the-flag-competition-at-c0c0n-2024-cybersecurity-meet/article68918146.ece" target="_blank">[news link]</a></p><br>
