@@ -26,7 +26,7 @@
       color: #e0e0e0;
       font-family: 'Fira Code', monospace;
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.1;
       margin: 0;
       padding: 20px;
       text-transform: lowercase;
@@ -38,41 +38,39 @@
     }
 
     header {
-      padding-top: 20px;
-      margin-bottom: 40px;
+      padding-top: 10px;
+      margin-bottom: 20px;
     }
 
     h1, h2 {
       font-weight: 400;
-      margin-top: 30px;
+      margin-top: 20px;
       margin-bottom: 0;
-      display: inline-block;
-      position: relative;
-      word-wrap: break-word;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     h1::after {
-      content: "";
-      display: block;
-      border-bottom: 2px solid #e0e0e0;
-      margin-top: 2px;
+      content: "================";
+      line-height: 0.7;
+      margin-top: 1px;
     }
 
     h2::after {
-      content: "";
-      display: block;
-      border-bottom: 1px solid #e0e0e0;
-      margin-top: 2px;
+      content: "----------------";
+      line-height: 0.7;
+      margin-top: 1px;
     }
 
     p, li, a, small {
       font-size: 15px;
+      margin: 0;
     }
 
     a {
       color: #52a8ff;
       text-decoration: none;
-      word-wrap: break-word;
     }
 
     a:hover {
@@ -80,20 +78,17 @@
     }
 
     section {
-      margin-bottom: 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
+      margin-bottom: 20px;
     }
 
     ul {
       list-style-type: none;
       padding-left: 0;
-      margin-top: 10px;
+      margin-top: 4px;
     }
 
     li {
-      margin-bottom: 12px;
+      margin-bottom: 5px;
       position: relative;
       padding-left: 20px;
     }
@@ -107,47 +102,39 @@
     .social-icons {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 15px;
-    }
-
-    .blink_me {
-      animation: blinker 1s step-end infinite;
-    }
-
-    @keyframes blinker {
-      50% { opacity: 0; }
+      gap: 12px;
+      margin-top: 8px;
     }
 
     small {
       color: #a0a0a0;
       display: block;
-      margin-top: 2px;
     }
 
     .text-center {
-      margin-top: 60px;
-      padding-bottom: 40px;
+      margin-top: 40px;
+      padding: 20px 0;
       border-top: 1px solid #3e4451;
-      padding-top: 20px;
       color: #a0a0a0;
       text-align: center;
     }
 
+    .content-block {
+      margin-top: 5px;
+    }
+
     @media (max-width: 600px) {
-      body {
-        padding: 15px;
-      }
-      h1 { font-size: 1.4rem; }
-      h2 { font-size: 1.2rem; }
+      body { padding: 15px; }
+      h1 { font-size: 1.2rem; }
+      h2 { font-size: 1.1rem; }
     }
   </style>
 </head>
 <body>
   <main class="container">
     <header>
-      <h1>root@anand<span class="blink_me">_</span></h1>
-      <p>cybersecurity engineer | bug bounty hunter | hybrid athlete</p>
+      <h1>root@anand</h1>
+      <p class="content-block">cybersecurity engineer | bug bounty hunter | hybrid athlete</p>
       <div class="social-icons">
         <a href="https://linkedin.com/in/anandsreekumaras" target="_blank">linkedin</a>
         <a href="https://twitter.com/anandsreekumar_" target="_blank">twitter</a>
@@ -160,14 +147,16 @@
 
     <section id="work">
       <h2>what i do</h2>
-      <p style="margin-top: 10px;"><strong>cybersecurity engineer</strong> at <a href="https://www.ey.com/en_in/careers/global-delivery-services" target="_blank">ey gds</a></p>
-      <p>independent bug bounty hunter</p>
+      <div class="content-block">
+        <p><strong>cybersecurity engineer</strong> at <a href="https://www.ey.com/en_in/careers/global-delivery-services" target="_blank">ey gds</a></p>
+        <p>independent bug bounty hunter</p>
+      </div>
     </section>
 
     <section id="writeups">
       <h2>write-ups</h2>
       <ul>
-        <li><a href="writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br><small>march 2025</small></li>
+        <li><a href="/writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br><small>march 2025</small></li>
         <li><a href="/writeups/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">remote code execution via dependency confusion</a><br><small>march 2024</small></li>
         <li><a href="/writeups/graphql-idor-profile-picture-deletion" target="_blank">abusing graphql idor to delete another user's profile picture</a><br><small>july 2022</small></li>
         <li><a href="/writeups/blind-ssrf-via-dns-rebinding" target="_blank">blind ssrf via dns rebinding</a><br><small>april 2022</small></li>
@@ -177,20 +166,24 @@
     <section id="tools">
       <h2>tools</h2>
       <ul>
-        <li><strong>knockknock:</strong> bash script that automates ip/host filtering using http status codes. used for efficient scope reachability testing. <a href="https://github.com/anandsreekumaras/knockknock" target="_blank">[github]</a></li>
-        <li><strong>chromeshot:</strong> a headless chrome-powered tool that captures full-page screenshots from a list of urls or ips. ideal for visual recon. <a href="https://github.com/anandsreekumaras/chromeshot" target="_blank">[github]</a></li>
+        <li><strong>knockknock:</strong> bash script that automates ip/host filtering using http status codes. <a href="https://github.com/anandsreekumaras/knockknock" target="_blank">[github]</a></li>
+        <li><strong>chromeshot:</strong> a headless chrome-powered tool for visual recon. <a href="https://github.com/anandsreekumaras/chromeshot" target="_blank">[github]</a></li>
       </ul>
     </section>
 
     <section id="talks">
       <h2>miscellaneous</h2>
-      <p style="margin-top: 10px;">first prize winners of <a href="https://india.c0c0n.org/2024/" target="_blank">c0c0n 2024</a> ctf competition <a href="https://www.thehindubusinessline.com/info-tech/ust-clinches-top-three-positions-in-capture-the-flag-competition-at-c0c0n-2024-cybersecurity-meet/article68918146.ece" target="_blank">[news link]</a></p>
-      <p>delivered a talk at defcon <a href="https://events.dc0471.org/dc0471-meetup-0x02/" target="_blank">dc0471 meetup 0x02</a> in september 2018, focused on bug bounty hunting <a href="https://www.facebook.com/dc0471/photos/ms.c.eJxFVMmNRTEI62jEvvTf2CiA3z9abDY4UfIKSSJhdrM~;fZisH87ww8GDXRezW1SWSlzc5WGTAq7FclhM3Zzl6olpsOZg75bBjnlqM68I9Zsvebinv5agPrce~_TnzKMGXY~;Lj9DHl4C~_uGz~;93tnTL6CH6vEpgl5bvvTxzeGb4MerP6C~;efg46iMm3wrzV48hn0Z~;8aenpj4a~_9h5hXm2~;T6~_tfoD~_07afSDft96Ba~_c35uvwZQZfXT~;k54da~;hdnG3~;E7dO7Jr~;EgXdf8JNoqJs18~_HUhyvvPkLjx~_APT7zhTw4bXLif~_PCHfzi23pHPuvc~;vcJbrwo~_PZi~_~;e29Avoidx7Bb~_uPu593rv~;y7sVJMw~;34x5~;SUGPzbzqAp77Oe4nvPsk8HPbOPr56oOfRbb~;p7fmfUoH9p97D~_if92QNzLLv4Xvfun5hxG3fh2KeL~;8CX5W9J~_4bOnwd97Xd90~;P6nX4f~;0SgvvR~_hn3YPPV29hvDx9Cf5m4V8Mvo0fGjx1hrvGu9~;RySmaUGKlmLy62puhuYDdPjXj~;G6cUeT9swouZ~_~_VH28XTXr~;5bx4W8ok~;~;q9f6~;RzQz~;Wl89qyBcxkja~;fKtXXwFMg5v86lWmnhFPnXwj9I~_HsxP8dfkf5uqZ58fvfeVvH2HYR43~_939NPGX3hXnOy~_~;iVfziEnFYePf5xX309~;FnGr7J9A8Y~;1DC.bps.a.305859630211851/305860986878382/?type=3&theater" target="_blank">[event photos]</a></p>
+      <div class="content-block">
+        <p>first prize winners of <a href="https://india.c0c0n.org/2024/" target="_blank">c0c0n 2024</a> ctf competition <a href="https://www.thehindubusinessline.com/info-tech/ust-clinches-top-three-positions-in-capture-the-flag-competition-at-c0c0n-2024-cybersecurity-meet/article68918146.ece" target="_blank">[news link]</a></p>
+        <p>delivered a talk at defcon <a href="https://events.dc0471.org/dc0471-meetup-0x02/" target="_blank">dc0471 meetup 0x02</a> <a href="https://www.facebook.com/dc0471/photos/ms.c.eJxFVMmNRTEI62jEvvTf2CiA3z9abDY4UfIKSSJhdrM~;fZisH87ww8GDXRezW1SWSlzc5WGTAq7FclhM3Zzl6olpsOZg75bBjnlqM68I9Zsvebinv5agPrce~_TnzKMGXY~;Lj9DHl4C~_uGz~;93tnTL6CH6vEpgl5bvvTxzeGb4MerP6C~;efg46iMm3wrzV48hn0Z~;8aenpj4a~_9h5hXm2~;T6~_tfoD~_07afSDft96Ba~_c35uvwZQZfXT~;k54da~;hdnG3~;E7dO7Jr~;EgXdf8JNoqJs18~_HUhyvvPkLjx~_APT7zhTw4bXLif~_PCHfzi23pHPuvc~;vcJbrwo~_PZi~_~;e29Avoidx7Bb~_uPu593rv~;y7sVJMw~;34x5~;SUGPzbzqAp77Oe4nvPsk8HPbOPr56oOfRbb~;p7fmfUoH9p97D~_if92QNzLLv4Xvfun5hxG3fh2KeL~;8CX5W9J~_4bOnwd97Xd90~;P6nX4f~;0SgvvR~_hn3YPPV29hvDx9Cf5m4V8Mvo0fGjx1hrvGu9~;RySmaUGKlmLy62puhuYDdPjXj~;G6cUeT9swouZ~_~_VH28XTXr~;5bx4W8ok~;~;q9f6~;RzQz~;Wl89qyBcxkja~;fKtXXwFMg5v86lWmnhFPnXwj9I~_HsxP8dfkf5uqZ58fvfeVvH2HYR43~_939NPGX3hXnOy~_~;iVfziEnFYePf5xX309~;FnGr7J9A8Y~;1DC.bps.a.305859630211851/305860986878382/?type=3&theater" target="_blank">[event photos]</a></p>
+      </div>
     </section>
 
     <section id="contact">
       <h2>mail</h2>
-      <p style="margin-top: 10px;"><a href="mailto:mail@anandsreekumar.com">mail@anandsreekumar.com</a></p>
+      <div class="content-block">
+        <p><a href="mailto:mail@anandsreekumar.com">mail@anandsreekumar.com</a></p>
+      </div>
     </section>
 
     <p class="text-center">&copy; 2025 anand sreekumar</p>
