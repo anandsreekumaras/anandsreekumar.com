@@ -17,11 +17,16 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    ::selection {
+      background: #3e4451;
+      color: #ffffff;
+    }
+
     body {
       background-color: #1a1c21;
       color: #e0e0e0;
       font-family: 'Fira Code', monospace;
-      font-size: 18px; /* Increased from 15px */
+      font-size: 18px;
       line-height: 1.2;
       margin: 0;
       padding: 30px;
@@ -31,6 +36,12 @@
     .container {
       max-width: 900px;
       margin: auto;
+    }
+
+    .system-meta {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 20px;
     }
 
     header {
@@ -49,7 +60,6 @@
 
     h1::after {
       content: "==================================================";
-      letter-spacing: 0;
       white-space: nowrap;
       display: block;
       width: 100%;
@@ -60,7 +70,6 @@
 
     h2::after {
       content: "--------------------------------------------------";
-      letter-spacing: 0;
       white-space: nowrap;
       display: block;
       width: 100%;
@@ -70,7 +79,7 @@
     }
 
     p, li, a, small {
-      font-size: 18px; /* Consistent larger font */
+      font-size: 18px;
       margin: 0;
     }
 
@@ -80,7 +89,8 @@
     }
 
     a:hover {
-      text-decoration: underline;
+      background-color: #2c313a;
+      text-decoration: none;
     }
 
     section {
@@ -94,33 +104,29 @@
       list-style-type: none;
       padding-left: 0;
       margin-top: 10px;
+      width: 100%;
     }
 
     li {
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       position: relative;
-      padding-left: 25px;
+      padding-left: 30px;
       line-height: 1.4;
     }
 
     li::before {
-      content: "* ";
+      content: "$ ";
+      color: #52a8ff;
       position: absolute;
       left: 0;
-    }
-
-    .social-icons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 12px;
+      font-weight: bold;
     }
 
     small {
       color: #a0a0a0;
       display: block;
-      font-size: 15px; /* Slightly smaller for metadata */
-      margin-top: 2px;
+      font-size: 15px;
+      margin-top: 4px;
     }
 
     .text-center {
@@ -145,10 +151,12 @@
 </head>
 <body>
   <main class="container">
+    <div id="last-login" class="system-meta">last login: loading...</div>
+
     <header>
       <h1>root@anand</h1>
       <p class="content-block">cybersecurity engineer | bug bounty hunter | hybrid athlete</p>
-      <div class="social-icons">
+      <div class="social-icons" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 12px;">
         <a href="https://linkedin.com/in/anandsreekumaras" target="_blank">linkedin</a>
         <a href="https://twitter.com/anandsreekumar_" target="_blank">twitter</a>
         <a href="https://github.com/anandsreekumaras" target="_blank">github</a>
@@ -161,15 +169,15 @@
     <section id="work">
       <h2>what_i_do</h2>
       <div class="content-block">
-        <p><strong>cybersecurity engineer</strong> at <a href="https://www.ey.com/en_in/careers/global-delivery-services" target="_blank">ey gds</a></p><br>
-        <p>independent bug bounty hunter</p>
+        <p><strong>cybersecurity engineer</strong> at <a href="https://www.ey.com/en_in/careers/global-delivery-services" target="_blank">ey gds</a></p>
+        <br><p>independent bug bounty hunter</p>
       </div>
     </section>
 
     <section id="writeups">
       <h2>write_ups</h2>
       <ul>
-        <li><a href="writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br><small>march 2025</small></li>
+        <li><a href="/writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br><small>march 2025</small></li>
         <li><a href="/writeups/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">remote code execution via dependency confusion</a><br><small>march 2024</small></li>
         <li><a href="/writeups/graphql-idor-profile-picture-deletion" target="_blank">abusing graphql idor to delete another user's profile picture</a><br><small>july 2022</small></li>
         <li><a href="/writeups/blind-ssrf-via-dns-rebinding" target="_blank">blind ssrf via dns rebinding</a><br><small>april 2022</small></li>
@@ -186,10 +194,10 @@
 
     <section id="talks">
       <h2>miscellaneous</h2>
-      <div class="content-block">
-        <p><b>#</b> first prize winners of <a href="https://india.c0c0n.org/2024/" target="_blank">c0c0n 2024</a> ctf competition <a href="https://www.thehindubusinessline.com/info-tech/ust-clinches-top-three-positions-in-capture-the-flag-competition-at-c0c0n-2024-cybersecurity-meet/article68918146.ece" target="_blank">[news link]</a></p><br>
-        <p><b>#</b> delivered a talk at defcon <a href="https://events.dc0471.org/dc0471-meetup-0x02/" target="_blank">dc0471 meetup 0x02</a> <a href="https://www.facebook.com/dc0471/photos/ms.c.eJxFVMmNRTEI62jEvvTf2CiA3z9abDY4UfIKSSJhdrM~;fZisH87ww8GDXRezW1SWSlzc5WGTAq7FclhM3Zzl6olpsOZg75bBjnlqM68I9Zsvebinv5agPrce~_TnzKMGXY~;Lj9DHl4C~_uGz~;93tnTL6CH6vEpgl5bvvTxzeGb4MerP6C~;efg46iMm3wrzV48hn0Z~;8aenpj4a~_9h5hXm2~;T6~_tfoD~_07afSDft96Ba~_c35uvwZQZfXT~;k54da~;hdnG3~;E7dO7Jr~;EgXdf8JNoqJs18~_HUhyvvPkLjx~_APT7zhTw4bXLif~_PCHfzi23pHPuvc~;vcJbrwo~_PZi~_~;e29Avoidx7Bb~_uPu593rv~;y7sVJMw~;34x5~;SUGPzbzqAp77Oe4nvPsk8HPbOPr56oOfRbb~;p7fmfUoH9p97D~_if92QNzLLv4Xvfun5hxG3fh2KeL~;8CX5W9J~_4bOnwd97Xd90~;P6nX4f~;0SgvvR~_hn3YPPV29hvDx9Cf5m4V8Mvo0fGjx1hrvGu9~;RySmaUGKlmLy62puhuYDdPjXj~;G6cUeT9swouZ~_~_VH28XTXr~;5bx4W8ok~;~;q9f6~;RzQz~;Wl89qyBcxkja~;fKtXXwFMg5v86lWmnhFPnXwj9I~_HsxP8dfkf5uqZ58fvfeVvH2HYR43~_939NPGX3hXnOy~_~;iVfziEnFYePf5xX309~;FnGr7J9A8Y~;1DC.bps.a.305859630211851/305860986878382/?type=3&theater" target="_blank">[event photos]</a></p>
-      </div>
+      <ul>
+        <li>first prize winners of <a href="https://india.c0c0n.org/2024/" target="_blank">c0c0n 2024</a> ctf competition <a href="https://www.thehindubusinessline.com/info-tech/ust-clinches-top-three-positions-in-capture-the-flag-competition-at-c0c0n-2024-cybersecurity-meet/article68918146.ece" target="_blank">[news link]</a></li>
+        <li>delivered a talk at defcon <a href="https://events.dc0471.org/dc0471-meetup-0x02/" target="_blank">dc0471 meetup 0x02</a> <a href="..." target="_blank">[event photos]</a></li>
+      </ul>
     </section>
 
     <section id="contact">
@@ -201,5 +209,11 @@
 
     <p class="text-center">&copy; 2025 anand sreekumar</p>
   </main>
+
+  <script>
+    const date = new Date();
+    const options = { weekday: 'short', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    document.getElementById('last-login').innerText = `last login: ${date.toLocaleString('en-US', options).replace(',', '')} on ttys001`;
+  </script>
 </body>
 </html>
