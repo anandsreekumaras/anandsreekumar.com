@@ -21,59 +21,56 @@
       background-color: #1a1c21;
       color: #e0e0e0;
       font-family: 'Fira Code', monospace;
-      font-size: 15px;
-      line-height: 1.1;
+      font-size: 18px; /* Increased from 15px */
+      line-height: 1.2;
       margin: 0;
-      padding: 20px;
+      padding: 30px;
       text-transform: lowercase;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
     }
 
     header {
       padding-top: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     h1, h2 {
       font-weight: 400;
-      margin-top: 20px;
+      margin-top: 25px;
       margin-bottom: 0;
       display: inline-flex;
       flex-direction: column;
-      line-height: 0.5;
+      line-height: 0.8;
     }
 
     h1::after {
-      content: "";
-      height: 15px;
-      width: 100%;
-      background: repeating-linear-gradient(90deg, #e0e0e0, #e0e0e0 9px, transparent 9px, transparent 9px);
-      mask-image: linear-gradient(to bottom, transparent 45%, black 45%, black 55%, transparent 55%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 45%, black 45%, black 55%, transparent 55%);
-      background-size: 1ch 100%;
-      background-repeat: repeat-x;
       content: "==================================================";
-      overflow: hidden;
+      letter-spacing: 0;
       white-space: nowrap;
+      display: block;
+      width: 100%;
+      overflow: hidden;
       margin-top: 2px;
       line-height: 1;
     }
 
     h2::after {
-      width: 100%;
       content: "--------------------------------------------------";
-      overflow: hidden;
+      letter-spacing: 0;
       white-space: nowrap;
-      line-height: 1;
+      display: block;
+      width: 100%;
+      overflow: hidden;
       margin-top: 2px;
+      line-height: 1;
     }
 
     p, li, a, small {
-      font-size: 15px;
+      font-size: 18px; /* Consistent larger font */
       margin: 0;
     }
 
@@ -87,7 +84,7 @@
     }
 
     section {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -96,13 +93,13 @@
     ul {
       list-style-type: none;
       padding-left: 0;
-      margin-top: 5px;
+      margin-top: 10px;
     }
 
     li {
-      margin-bottom: 5px;
+      margin-bottom: 8px;
       position: relative;
-      padding-left: 20px;
+      padding-left: 25px;
       line-height: 1.4;
     }
 
@@ -115,31 +112,34 @@
     .social-icons {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 8px;
+      gap: 15px;
+      margin-top: 12px;
     }
 
     small {
       color: #a0a0a0;
       display: block;
+      font-size: 15px; /* Slightly smaller for metadata */
+      margin-top: 2px;
     }
 
     .text-center {
-      margin-top: 40px;
-      padding: 20px 0;
+      margin-top: 50px;
+      padding: 25px 0;
       border-top: 1px solid #3e4451;
       color: #a0a0a0;
       text-align: center;
     }
 
     .content-block {
-      margin-top: 5px;
+      margin-top: 10px;
     }
 
     @media (max-width: 600px) {
-      body { padding: 15px; }
-      h1 { font-size: 1.2rem; }
-      h2 { font-size: 1.1rem; }
+      body { padding: 20px; font-size: 16px; }
+      h1 { font-size: 1.4rem; }
+      h2 { font-size: 1.2rem; }
+      p, li, a { font-size: 16px; }
     }
   </style>
 </head>
@@ -169,7 +169,7 @@
     <section id="writeups">
       <h2>write_ups</h2>
       <ul>
-        <li><a href="/writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br><small>march 2025</small></li>
+        <li><a href="writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br><small>march 2025</small></li>
         <li><a href="/writeups/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">remote code execution via dependency confusion</a><br><small>march 2024</small></li>
         <li><a href="/writeups/graphql-idor-profile-picture-deletion" target="_blank">abusing graphql idor to delete another user's profile picture</a><br><small>july 2022</small></li>
         <li><a href="/writeups/blind-ssrf-via-dns-rebinding" target="_blank">blind ssrf via dns rebinding</a><br><small>april 2022</small></li>
