@@ -17,203 +17,296 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    ::selection {
-      background: #3e4451;
-      color: #ffffff;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    ::selection { background: #3e4451; color: #ffffff; }
 
     body {
       background-color: #1a1c21;
       color: #e0e0e0;
       font-family: 'Fira Code', monospace;
-      font-size: 18px;
-      line-height: 1.2;
-      margin: 0;
-      padding: 30px;
-      text-transform: lowercase;
+      font-size: 15px;
+      line-height: 1.6;
+      padding: 2rem 2.5rem;
     }
 
     .container {
-      max-width: 900px;
-      margin: auto;
+      max-width: 860px;
+      margin: 0 auto;
     }
 
-    .system-meta {
+    /* header */
+    header { margin-bottom: 2rem; }
+
+    .port-prompt {
+      font-size: 13px;
       color: #666;
-      font-size: 14px;
-      margin-bottom: 20px;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
     }
 
-    header {
-      padding-top: 10px;
-      margin-bottom: 30px;
+    .port-name {
+      font-size: 22px;
+      font-weight: 500;
+      color: #e0e0e0;
+      line-height: 1.2;
     }
 
-    h1, h2 {
-      font-weight: 400;
-      margin-top: 25px;
-      margin-bottom: 0;
-      display: inline-flex;
-      flex-direction: column;
-      line-height: 0.8;
+    .port-name span { color: #52a8ff; }
+
+    .port-tagline {
+      font-size: 13px;
+      color: #a0a0a0;
+      margin-top: 6px;
+      letter-spacing: 0.02em;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
     }
 
-    h1::after {
-      content: "==================================================";
-      white-space: nowrap;
-      display: block;
-      width: 100%;
-      overflow: hidden;
-      margin-top: 2px;
-      line-height: 1;
+    .port-tagline span:not(:last-child)::after {
+      content: ' · ';
+      white-space: pre;
+      color: #555;
     }
 
-    h2::after {
-      content: "--------------------------------------------------";
-      white-space: nowrap;
-      display: block;
-      width: 100%;
-      overflow: hidden;
-      margin-top: 2px;
-      line-height: 1;
+    .port-socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
     }
 
-    p, li, a, small {
-      font-size: 18px;
-      margin: 0;
-    }
-
-    a {
-      color: #52a8ff;
+    .port-socials a {
+      font-size: 12px;
+      color: #a0a0a0;
       text-decoration: none;
+      border: 0.5px solid #3e4451;
+      padding: 3px 10px;
+      border-radius: 3px;
+      transition: color 0.15s, border-color 0.15s;
     }
 
-    a:hover {
-      background-color: #2c313a;
-      text-decoration: none;
+    .port-socials a:hover { color: #52a8ff; border-color: rgba(82,168,255,0.4); }
+
+    /* divider */
+    .port-divider {
+      border: none;
+      border-top: 0.5px solid #3e4451;
+      margin: 1.75rem 0;
     }
 
-    section {
-      margin-bottom: 30px;
+    /* section */
+    section { margin-bottom: 2rem; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: #666;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 0.5px;
+      background: #3e4451;
+    }
+
+    /* what i do */
+    .port-role-title { font-size: 14px; font-weight: 500; color: #e0e0e0; }
+    .port-role-org { font-size: 13px; color: #52a8ff; margin-top: 4px; }
+    .port-role-sub { font-size: 13px; color: #a0a0a0; margin-top: 6px; }
+
+    /* writeups */
+    .port-writeups { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+
+    .port-writeup-item {
       display: flex;
       flex-direction: column;
+      gap: 3px;
+      padding-left: 16px;
+      border-left: 2px solid #3e4451;
+      transition: border-color 0.15s;
+    }
+
+    .port-writeup-item:hover { border-left-color: #52a8ff; }
+
+    .port-writeup-item a {
+      font-size: 14px;
+      color: #e0e0e0;
+      text-decoration: none;
+      line-height: 1.5;
+    }
+
+    .port-writeup-item a:hover { color: #52a8ff; }
+
+    .port-writeup-meta {
+      font-size: 11px;
+      color: #666;
+      display: flex;
+      gap: 10px;
+    }
+
+    /* tools */
+    .port-tools { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+    .port-tool-item {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border: 0.5px solid #3e4451;
+      border-radius: 6px;
+      background: #22252b;
+    }
+
+    .port-tool-name { font-size: 13px; font-weight: 500; color: #e0e0e0; }
+    .port-tool-desc { font-size: 12px; color: #a0a0a0; }
+    .port-tool-link { font-size: 12px; color: #52a8ff; text-decoration: none; white-space: nowrap; }
+    .port-tool-link:hover { text-decoration: underline; }
+
+    /* misc */
+    .port-misc { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+
+    .port-misc-item {
+      display: flex;
+      gap: 10px;
       align-items: flex-start;
+      font-size: 13px;
+      color: #e0e0e0;
+      line-height: 1.5;
     }
 
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-      margin-top: 10px;
-      width: 100%;
-    }
+    .port-misc-icon { font-size: 11px; color: #3db87a; margin-top: 3px; flex-shrink: 0; font-weight: 500; }
+    .port-misc-item a { color: #52a8ff; text-decoration: none; }
+    .port-misc-item a:hover { text-decoration: underline; }
 
-    li {
-      margin-bottom: 12px;
-      position: relative;
-      padding-left: 30px;
-      line-height: 1.4;
-    }
+    /* contact */
+    .port-contact { display: flex; flex-direction: column; gap: 6px; }
+    .port-contact a { font-size: 14px; color: #52a8ff; text-decoration: none; }
+    .port-contact a:hover { text-decoration: underline; }
+    .port-contact-hint { font-size: 12px; color: #666; }
 
-    li::before {
-      content: "$ ";
-      color: #52a8ff;
-      position: absolute;
-      left: 0;
-      font-weight: bold;
-    }
-
-    small {
-      color: #a0a0a0;
-      display: block;
-      font-size: 15px;
-      margin-top: 4px;
-    }
-
-    .text-center {
-      margin-top: 50px;
-      padding: 25px 0;
-      border-top: 1px solid #3e4451;
-      color: #a0a0a0;
+    /* footer */
+    .port-footer {
+      font-size: 11px;
+      color: #666;
+      padding-top: 1.5rem;
+      border-top: 0.5px solid #3e4451;
       text-align: center;
-    }
-
-    .content-block {
-      margin-top: 10px;
+      letter-spacing: 0.04em;
     }
 
     @media (max-width: 600px) {
-      body { padding: 20px; font-size: 16px; }
-      h1 { font-size: 1.4rem; }
-      h2 { font-size: 1.2rem; }
-      p, li, a { font-size: 16px; }
+      body { padding: 1rem 1.25rem; font-size: 14px; }
+      .port-name { font-size: 18px; }
+      .port-tagline { display: flex; flex-direction: column; gap: 2px; letter-spacing: 0; }
+      .port-tool-item { grid-template-columns: 1fr; gap: 4px; }
+      .port-tool-link { margin-top: 2px; }
+      .port-writeup-meta { flex-wrap: wrap; gap: 6px; }
+      .port-misc-item { font-size: 12px; }
     }
   </style>
 </head>
 <body>
   <main class="container">
-    <div id="last-login" class="system-meta">last login: loading...</div>
 
     <header>
-      <h1>root@anand</h1>
-      <p class="content-block">cybersecurity engineer | bug bounty hunter | hybrid athlete</p>
-      <div class="social-icons" style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 12px;">
-        <a href="https://linkedin.com/in/anandsreekumaras" target="_blank">linkedin</a>
-        <a href="https://twitter.com/anandsreekumar_" target="_blank">twitter</a>
-        <a href="https://github.com/anandsreekumaras" target="_blank">github</a>
-        <!-- <a href="https://facebook.com/anandsreekumaras" target="_blank">facebook</a> -->
-        <a href="https://instagram.com/anandsreekumaras/" target="_blank">instagram</a>
-        <a href="https://stackoverflow.com/users/5317663/anand-a-s" target="_blank">stackoverflow</a>
+      <div class="port-prompt">~/anand $ whoami</div>
+      <div class="port-name"><span>root</span>@anand-sreekumar</div>
+      <div class="port-tagline">
+        <span>cybersecurity engineer</span>
+        <span>bug bounty hunter</span>
+        <span>hybrid athlete</span>
+      </div>
+      <div class="port-socials">
+        <a href="https://linkedin.com/in/anandsreekumaras" target="_blank">linkedin ↗</a>
+        <a href="https://twitter.com/anandsreekumar_" target="_blank">twitter ↗</a>
+        <a href="https://github.com/anandsreekumaras" target="_blank">github ↗</a>
+        <a href="https://instagram.com/anandsreekumaras/" target="_blank">instagram ↗</a>
+        <a href="https://stackoverflow.com/users/5317663/anand-a-s" target="_blank">stackoverflow ↗</a>
       </div>
     </header>
 
+    <hr class="port-divider">
+
     <section id="work">
-      <h2>what_i_do</h2>
-      <div class="content-block">
-        <p><strong>cybersecurity engineer</strong> at <a href="https://www.ey.com/en_in/careers/global-delivery-services" target="_blank">ey gds</a></p>
-        <br><p>independent bug bounty hunter</p>
-      </div>
+      <div class="section-label">what_i_do</div>
+      <div class="port-role-title">cybersecurity engineer</div>
+      <div class="port-role-org">@ EY global delivery services</div>
+      <div class="port-role-sub">independent bug bounty hunter</div>
+
     </section>
 
     <section id="writeups">
-      <h2>write_ups</h2>
-      <ul>
-        <li><a href="/writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy command & control framework for data exfiltration</a><br><small>march 2025</small></li>
-        <li><a href="/writeups/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">remote code execution via dependency confusion</a><br><small>march 2024</small></li>
-        <li><a href="/writeups/graphql-idor-profile-picture-deletion" target="_blank">abusing graphql idor to delete another user's profile picture</a><br><small>july 2022</small></li>
-        <li><a href="/writeups/blind-ssrf-via-dns-rebinding" target="_blank">blind ssrf via dns rebinding</a><br><small>april 2022</small></li>
+      <div class="section-label">write_ups</div>
+      <ul class="port-writeups">
+        <li class="port-writeup-item">
+          <a href="/writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers & d1 as a stealthy c2 framework for data exfiltration</a>
+          <div class="port-writeup-meta"><span>march 2025</span><span>cloudflare · c2 · evasion</span></div>
+        </li>
+        <li class="port-writeup-item">
+          <a href="/writeups/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">remote code execution via dependency confusion</a>
+          <div class="port-writeup-meta"><span>march 2024</span><span>rce · supply chain · h1</span></div>
+        </li>
+        <li class="port-writeup-item">
+          <a href="/writeups/graphql-idor-profile-picture-deletion" target="_blank">abusing graphql idor to delete another user's profile picture</a>
+          <div class="port-writeup-meta"><span>july 2022</span><span>graphql · idor</span></div>
+        </li>
+        <li class="port-writeup-item">
+          <a href="/writeups/blind-ssrf-via-dns-rebinding" target="_blank">blind ssrf via dns rebinding</a>
+          <div class="port-writeup-meta"><span>april 2022</span><span>ssrf · dns rebinding</span></div>
+        </li>
       </ul>
     </section>
 
     <section id="tools">
-      <h2>tools</h2>
-      <ul>
-        <li><strong>knockknock:</strong> bash script that automates ip/host filtering using http status codes. <a href="https://github.com/anandsreekumaras/knockknock" target="_blank">[github]</a></li>
-        <li><strong>chromeshot:</strong> a headless chrome-powered tool for visual recon. <a href="https://github.com/anandsreekumaras/chromeshot" target="_blank">[github]</a></li>
+      <div class="section-label">tools</div>
+      <ul class="port-tools">
+        <li class="port-tool-item">
+          <div class="port-tool-name">knockknock</div>
+          <div class="port-tool-desc">bash script for ip/host filtering via http status codes</div>
+          <a class="port-tool-link" href="https://github.com/anandsreekumaras/knockknock" target="_blank">[github] ↗</a>
+        </li>
+        <li class="port-tool-item">
+          <div class="port-tool-name">chromeshot</div>
+          <div class="port-tool-desc">headless chrome tool for visual recon</div>
+          <a class="port-tool-link" href="https://github.com/anandsreekumaras/chromeshot" target="_blank">[github] ↗</a>
+        </li>
       </ul>
     </section>
 
-    <section id="talks">
-      <h2>miscellaneous</h2>
-      <ul>
-        <li>first prize winners of <a href="https://india.c0c0n.org/2024/" target="_blank">c0c0n 2024</a> ctf competition <a href="https://www.thehindubusinessline.com/info-tech/ust-clinches-top-three-positions-in-capture-the-flag-competition-at-c0c0n-2024-cybersecurity-meet/article68918146.ece" target="_blank">[news link]</a></li>
-        <li>delivered a talk at defcon <a href="https://events.dc0471.org/dc0471-meetup-0x02/" target="_blank">dc0471 meetup 0x02</a> <a href="https://www.facebook.com/dc0471/photos/ms.c.eJxFVMmNRTEI62jEvvTf2CiA3z9abDY4UfIKSSJhdrM~;fZisH87ww8GDXRezW1SWSlzc5WGTAq7FclhM3Zzl6olpsOZg75bBjnlqM68I9Zsvebinv5agPrce~_TnzKMGXY~;Lj9DHl4C~_uGz~;93tnTL6CH6vEpgl5bvvTxzeGb4MerP6C~;efg46iMm3wrzV48hn0Z~;8aenpj4a~_9h5hXm2~;T6~_tfoD~_07afSDft96Ba~_c35uvwZQZfXT~;k54da~;hdnG3~;E7dO7Jr~;EgXdf8JNoqJs18~_HUhyvvPkLjx~_APT7zhTw4bXLif~_PCHfzi23pHPuvc~;vcJbrwo~_PZi~_~;e29Avoidx7Bb~_uPu593rv~;y7sVJMw~;34x5~;SUGPzbzqAp77Oe4nvPsk8HPbOPr56oOfRbb~;p7fmfUoH9p97D~_if92QNzLLv4Xvfun5hxG3fh2KeL~;8CX5W9J~_4bOnwd97Xd90~;P6nX4f~;0SgvvR~_hn3YPPV29hvDx9Cf5m4V8Mvo0fGjx1hrvGu9~;RySmaUGKlmLy62puhuYDdPjXj~;G6cUeT9swouZ~_~_VH28XTXr~;5bx4W8ok~;~;q9f6~;RzQz~;Wl89qyBcxkja~;fKtXXwFMg5v86lWmnhFPnXwj9I~_HsxP8dfkf5uqZ58fvfeVvH2HYR43~_939NPGX3hXnOy~_~;iVfziEnFYePf5xX309~;FnGr7J9A8Y~;1DC.bps.a.305859630211851/305860986878382/?type=3&theater" target="_blank">[event photos]</a></li>
+    <section id="misc">
+      <div class="section-label">miscellaneous</div>
+      <ul class="port-misc">
+        <li class="port-misc-item">
+          <span class="port-misc-icon">✓</span>
+          <span>first prize, <a href="https://india.c0c0n.org/2024/" target="_blank">c0c0n 2024</a> ctf — <a href="https://www.thehindubusinessline.com/info-tech/ust-clinches-top-three-positions-in-capture-the-flag-competition-at-c0c0n-2024-cybersecurity-meet/article68918146.ece" target="_blank">news coverage</a></span>
+        </li>
+        <li class="port-misc-item">
+          <span class="port-misc-icon">✓</span>
+          <span>talk at defcon <a href="https://events.dc0471.org/dc0471-meetup-0x02/" target="_blank">dc0471 meetup 0x02</a> — <a href="https://www.facebook.com/dc0471/photos/ms.c.eJxFVMmNRTEI62jEvvTf2CiA3z9abDY4UfIKSSJhdrM~;fZisH87ww8GDXRezW1SWSlzc5WGTAq7FclhM3Zzl6olpsOZg75bBjnlqM68I9Zsvebinv5agPrce~_TnzKMGXY~;Lj9DHl4C~_uGz~;93tnTL6CH6vEpgl5bvvTxzeGb4MerP6C~;efg46iMm3wrzV48hn0Z~;8aenpj4a~_9h5hXm2~;T6~_tfoD~_07afSDft96Ba~_c35uvwZQZfXT~;k54da~;hdnG3~;E7dO7Jr~;EgXdf8JNoqJs18~_HUhyvvPkLjx~_APT7zhTw4bXLif~_PCHfzi23pHPuvc~;vcJbrwo~_PZi~_~;e29Avoidx7Bb~_uPu593rv~;y7sVJMw~;34x5~;SUGPzbzqAp77Oe4nvPsk8HPbOPr56oOfRbb~;p7fmfUoH9p97D~_if92QNzLLv4Xvfun5hxG3fh2KeL~;8CX5W9J~_4bOnwd97Xd90~;P6nX4f~;0SgvvR~_hn3YPPV29hvDx9Cf5m4V8Mvo0fGjx1hrvGu9~;RySmaUGKlmLy62puhuYDdPjXj~;G6cUeT9swouZ~_~_VH28XTXr~;5bx4W8ok~;~;q9f6~;RzQz~;Wl89qyBcxkja~;fKtXXwFMg5v86lWmnhFPnXwj9I~_HsxP8dfkf5uqZ58fvfeVvH2HYR43~_939NPGX3hXnOy~_~;iVfziEnFYePf5xX309~;FnGr7J9A8Y~;1DC.bps.a.305859630211851/305860986878382/?type=3&theater" target="_blank">event photos</a></span>
+        </li>
       </ul>
     </section>
 
     <section id="contact">
-      <h2>mail</h2>
-      <div class="content-block">
-        <p><a href="mailto:mail@anandsreekumar.com">mail@anandsreekumar.com</a></p>
+      <div class="section-label">contact</div>
+      <div class="port-contact">
+        <a href="mailto:mail@anandsreekumar.com">mail@anandsreekumar.com</a>
+        
       </div>
     </section>
 
-    <p class="text-center">&copy; 2026 anand sreekumar</p>
-  </main>
+    <div class="port-footer">© 2026 anand sreekumar · trivandrum, kerala</div>
 
-  <script>
-    const date = new Date();
-    const options = { weekday: 'short', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-    document.getElementById('last-login').innerText = `last login: ${date.toLocaleString('en-US', options).replace(',', '')} on ttys001`;
-  </script>
+  </main>
 </body>
 </html>
