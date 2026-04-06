@@ -24,15 +24,12 @@
       background-color: #1a1c21;
       color: #c8c8c8;
       font-family: 'Courier New', Courier, monospace;
-      font-size: 15.5px;
+      font-size: 17px;
       line-height: 1.75;
       padding: 3rem 3.5rem;
     }
 
-    .container {
-      max-width: 740px;
-      margin: 0 auto;
-    }
+    .container { max-width: 740px; margin: 0 auto; }
 
     a { color: #c8c8c8; text-decoration: none; }
     a:hover { text-decoration: underline; color: #ffffff; }
@@ -42,7 +39,6 @@
     .dim { color: #555; }
     .heading { color: #ffffff; }
     .rule { color: #444; margin-bottom: 0.75rem; }
-
     .sub { color: #888; }
     .blue { color: #7ab8f5; }
 
@@ -54,28 +50,20 @@
 
     .misc-entry { margin-bottom: 0.4rem; color: #888; word-break: break-word; }
 
-    .socials { color: #888; }
-    .socials .row { display: flex; gap: 0; margin-bottom: 0.1rem; flex-wrap: wrap; }
+    .socials .row { display: flex; margin-bottom: 0.1rem; flex-wrap: wrap; }
     .socials .label { display: inline-block; width: 16ch; color: #888; flex-shrink: 0; }
     .socials a { color: #888; word-break: break-all; }
     .socials a:hover { color: #ffffff; text-decoration: underline; }
 
     p { color: #888; word-break: break-word; }
-
     .footer { margin-top: 2.5rem; color: #444; word-break: break-word; }
     .blankline { height: 1rem; }
 
     @media (max-width: 600px) {
-      body { padding: 1.5rem 1.25rem; font-size: 14px; }
-
+      body { padding: 1.5rem 1.25rem; font-size: 15px; }
       .socials .row { flex-direction: column; margin-bottom: 0.6rem; }
       .socials .label { width: auto; color: #555; font-size: 12px; line-height: 1.4; }
-      .socials a { padding-left: 0; }
-
-      .entry .meta,
-      .entry .desc,
-      .entry .link { padding-left: 2ch; }
-
+      .entry .meta, .entry .desc, .entry .link { padding-left: 2ch; }
       .rule { overflow-wrap: break-word; word-break: break-all; }
     }
   </style>
@@ -83,7 +71,7 @@
 <body>
 <div class="container">
 
-<div class="dim">~/anand $ whoami</div>
+<div class="dim">~/anand $ cat resume.txt</div>
 <div class="blankline"></div>
 
 <div class="block">
