@@ -2,8 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta property="og:url" content="https://anandsreekumar.com">
+  <meta property="og:image" content="/images/meta.jpg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>anand | cybersecurity engineer</title>
+  <meta name="description" content="cybersecurity engineer from thiruvananthapuram" />
+  <meta itemprop="name" content="anand | cybersecurity engineer" />
+  <meta itemprop="description" content="cybersecurity engineer from thiruvananthapuram" />
+  <meta itemprop="image" content="/images/meta.jpg" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="anand | cybersecurity engineer" />
+  <meta property="og:description" content="cybersecurity engineer from thiruvananthapuram" />
+  <meta property="og:image" content="/images/meta.jpg" />
+  <meta name="theme-color" content="#1a1c21">
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     ::selection { background: #3e4451; color: #ffffff; }
@@ -35,29 +47,43 @@
     .blue { color: #7ab8f5; }
 
     .entry { margin-bottom: 1rem; }
-    .entry .title { color: #c8c8c8; }
-    .entry .meta { color: #555; padding-left: 4ch; }
-    .entry .desc { color: #888; padding-left: 4ch; }
-    .entry .link { color: #7ab8f5; padding-left: 4ch; }
+    .entry .title { color: #c8c8c8; word-break: break-word; }
+    .entry .meta { color: #555; padding-left: 4ch; word-break: break-word; }
+    .entry .desc { color: #888; padding-left: 4ch; word-break: break-word; }
+    .entry .link { color: #7ab8f5; padding-left: 4ch; word-break: break-all; }
 
-    .misc-entry { margin-bottom: 0.4rem; color: #888; }
+    .misc-entry { margin-bottom: 0.4rem; color: #888; word-break: break-word; }
 
     .socials { color: #888; }
-    .socials .row { display: flex; gap: 0; margin-bottom: 0.1rem; }
+    .socials .row { display: flex; gap: 0; margin-bottom: 0.1rem; flex-wrap: wrap; }
     .socials .label { display: inline-block; width: 16ch; color: #888; flex-shrink: 0; }
-    .socials a { color: #888; }
+    .socials a { color: #888; word-break: break-all; }
     .socials a:hover { color: #ffffff; text-decoration: underline; }
 
-    p { color: #888; }
+    p { color: #888; word-break: break-word; }
 
-    .footer { margin-top: 2.5rem; color: #444; }
+    .footer { margin-top: 2.5rem; color: #444; word-break: break-word; }
     .blankline { height: 1rem; }
+
+    @media (max-width: 600px) {
+      body { padding: 1.5rem 1.25rem; font-size: 14px; }
+
+      .socials .row { flex-direction: column; margin-bottom: 0.6rem; }
+      .socials .label { width: auto; color: #555; font-size: 12px; line-height: 1.4; }
+      .socials a { padding-left: 0; }
+
+      .entry .meta,
+      .entry .desc,
+      .entry .link { padding-left: 2ch; }
+
+      .rule { overflow-wrap: break-word; word-break: break-all; }
+    }
   </style>
 </head>
 <body>
 <div class="container">
 
-<div class="dim">~/anand $ cat anand.txt</div>
+<div class="dim">~/anand $ cat resume.txt</div>
 <div class="blankline"></div>
 
 <div class="block">
@@ -91,22 +117,22 @@
   <div class="rule">=========</div>
 
   <div class="entry">
-    <div class="title">  cloudflare workers and d1 as a stealthy c2 framework for data exfiltration</div>
+    <div class="title">  <a href="/writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy c2 framework for data exfiltration</a></div>
     <div class="meta">march 2025 | cloudflare · c2 · evasion</div>
   </div>
 
   <div class="entry">
-    <div class="title">  remote code execution via dependency confusion</div>
+    <div class="title">  <a href="/writeups/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">remote code execution via dependency confusion</a></div>
     <div class="meta">march 2024 | rce · supply chain · h1</div>
   </div>
 
   <div class="entry">
-    <div class="title">  abusing graphql idor to delete another user's profile picture</div>
+    <div class="title">  <a href="/writeups/graphql-idor-profile-picture-deletion" target="_blank">abusing graphql idor to delete another user's profile picture</a></div>
     <div class="meta">july 2022 | graphql · idor</div>
   </div>
 
   <div class="entry">
-    <div class="title">  blind ssrf via dns rebinding</div>
+    <div class="title">  <a href="/writeups/blind-ssrf-via-dns-rebinding" target="_blank">blind ssrf via dns rebinding</a></div>
     <div class="meta">april 2022 | ssrf · dns rebinding</div>
   </div>
 </div>
