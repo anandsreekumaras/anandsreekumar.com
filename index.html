@@ -10,138 +10,141 @@
 
     body {
       background-color: #1a1c21;
-      color: #e0e0e0;
+      color: #c8c8c8;
       font-family: 'Courier New', Courier, monospace;
-      font-size: 14px;
-      line-height: 1.6;
-      padding: 2rem 2.5rem;
+      font-size: 15.5px;
+      line-height: 1.75;
+      padding: 3rem 3.5rem;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 740px;
       margin: 0 auto;
     }
 
-    a { color: #e0e0e0; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a { color: #c8c8c8; text-decoration: none; }
+    a:hover { text-decoration: underline; color: #ffffff; }
 
-    .block { margin-bottom: 1.6rem; }
+    .block { margin-bottom: 2rem; }
 
-    .heading { color: #e0e0e0; font-weight: bold; margin-bottom: 0; }
-    .rule-eq { color: #666; margin-bottom: 0.6rem; }
-    .rule-dash { color: #666; margin-bottom: 0.6rem; }
+    .dim { color: #555; }
+    .heading { color: #ffffff; }
+    .rule { color: #444; margin-bottom: 0.75rem; }
 
-    p { margin-bottom: 0.4rem; color: #a0a0a0; }
+    .sub { color: #888; }
+    .blue { color: #7ab8f5; }
 
-    .sub { color: #a0a0a0; }
-    .blue { color: #52a8ff; }
-    .dim { color: #666; }
+    .entry { margin-bottom: 1rem; }
+    .entry .title { color: #c8c8c8; }
+    .entry .meta { color: #555; padding-left: 4ch; }
+    .entry .desc { color: #888; padding-left: 4ch; }
+    .entry .link { color: #7ab8f5; padding-left: 4ch; }
 
-    .writeup-entry { margin-bottom: 0.8rem; }
-    .writeup-entry .title { color: #e0e0e0; }
-    .writeup-entry .meta { color: #666; font-size: 13px; padding-left: 2ch; }
+    .misc-entry { margin-bottom: 0.4rem; color: #888; }
 
-    .tool-entry { margin-bottom: 0.8rem; }
-    .tool-entry .name { color: #e0e0e0; }
-    .tool-entry .desc { color: #a0a0a0; padding-left: 2ch; }
-    .tool-entry .link { color: #52a8ff; padding-left: 2ch; }
+    .socials { color: #888; }
+    .socials .row { display: flex; gap: 0; margin-bottom: 0.1rem; }
+    .socials .label { display: inline-block; width: 16ch; color: #888; flex-shrink: 0; }
+    .socials a { color: #888; }
+    .socials a:hover { color: #ffffff; text-decoration: underline; }
 
-    .misc-entry { margin-bottom: 0.5rem; color: #a0a0a0; }
+    p { color: #888; }
 
-    .socials { color: #a0a0a0; margin-bottom: 0.4rem; }
-
-    .footer { margin-top: 2rem; color: #666; }
+    .footer { margin-top: 2.5rem; color: #444; }
+    .blankline { height: 1rem; }
   </style>
 </head>
 <body>
 <div class="container">
 
-  <div class="block">
-    <div class="dim">~/anand $ whoami</div>
-    <div class="heading">root@anandsreekumar.com</div>
-    <div class="rule-eq">=======================</div>
-    <div class="sub">cybersecurity engineer · bug bounty hunter · hybrid athlete</div>
+<div class="dim">~/anand $ cat resume.txt</div>
+<div class="blankline"></div>
+
+<div class="block">
+  <div class="heading">root@anandsreekumar.com</div>
+  <div class="rule">=======================</div>
+  <div class="sub">cybersecurity engineer · bug bounty hunter · hybrid athlete</div>
+</div>
+
+<div class="block">
+  <div class="heading">socials</div>
+  <div class="rule">-------</div>
+  <div class="socials">
+    <div class="row"><span class="label">  linkedin</span><a href="https://linkedin.com/in/anandsreekumaras" target="_blank">linkedin.com/in/anandsreekumaras</a></div>
+    <div class="row"><span class="label">  twitter</span><a href="https://twitter.com/anandsreekumar_" target="_blank">twitter.com/anandsreekumar_</a></div>
+    <div class="row"><span class="label">  github</span><a href="https://github.com/anandsreekumaras" target="_blank">github.com/anandsreekumaras</a></div>
+    <div class="row"><span class="label">  instagram</span><a href="https://instagram.com/anandsreekumaras/" target="_blank">instagram.com/anandsreekumaras</a></div>
+    <div class="row"><span class="label">  stackoverflow</span><a href="https://stackoverflow.com/users/5317663/anand-a-s" target="_blank">stackoverflow.com/users/5317663/anand-a-s</a></div>
+  </div>
+</div>
+
+<div class="block">
+  <div class="heading">what i do</div>
+  <div class="rule">=========</div>
+  <p>cybersecurity engineer</p>
+  <p>@ <span class="blue">ey global delivery services</span></p>
+  <p>independent bug bounty hunter</p>
+</div>
+
+<div class="block">
+  <div class="heading">write-ups</div>
+  <div class="rule">=========</div>
+
+  <div class="entry">
+    <div class="title">  cloudflare workers and d1 as a stealthy c2 framework for data exfiltration</div>
+    <div class="meta">march 2025 | cloudflare · c2 · evasion</div>
   </div>
 
-  <div class="block">
-    <div class="heading">socials</div>
-    <div class="rule-dash">-------</div>
-    <div class="socials">
-      <div>* <a href="https://linkedin.com/in/anandsreekumaras" target="_blank">linkedin</a></div>
-      <div>* <a href="https://twitter.com/anandsreekumar_" target="_blank">twitter</a></div>
-      <div>* <a href="https://github.com/anandsreekumaras" target="_blank">github</a></div>
-      <div>* <a href="https://instagram.com/anandsreekumaras/" target="_blank">instagram</a></div>
-      <div>* <a href="https://stackoverflow.com/users/5317663/anand-a-s" target="_blank">stackoverflow</a></div>
-    </div>
+  <div class="entry">
+    <div class="title">  remote code execution via dependency confusion</div>
+    <div class="meta">march 2024 | rce · supply chain · h1</div>
   </div>
 
-  <div class="block">
-    <div class="heading">what i do</div>
-    <div class="rule-eq">=========</div>
-    <p>cybersecurity engineer</p>
-    <p>@ <span class="blue">ey global delivery services</span></p>
-    <p>independent bug bounty hunter</p>
+  <div class="entry">
+    <div class="title">  abusing graphql idor to delete another user's profile picture</div>
+    <div class="meta">july 2022 | graphql · idor</div>
   </div>
 
-  <div class="block">
-    <div class="heading">write-ups</div>
-    <div class="rule-eq">=========</div>
+  <div class="entry">
+    <div class="title">  blind ssrf via dns rebinding</div>
+    <div class="meta">april 2022 | ssrf · dns rebinding</div>
+  </div>
+</div>
 
-    <div class="writeup-entry">
-      <div class="title">* <a href="/writeups/Cloudflare-Workers-for-Stealthy-C2-Operations" target="_blank">cloudflare workers and d1 as a stealthy c2 framework for data exfiltration</a></div>
-      <div class="meta">march 2025 | cloudflare · c2 · evasion</div>
-    </div>
+<div class="block">
+  <div class="heading">tools</div>
+  <div class="rule">-----</div>
 
-    <div class="writeup-entry">
-      <div class="title">* <a href="/writeups/rce-via-dependency-confusion-on-h1-privateprogram" target="_blank">remote code execution via dependency confusion</a></div>
-      <div class="meta">march 2024 | rce · supply chain · h1</div>
-    </div>
-
-    <div class="writeup-entry">
-      <div class="title">* <a href="/writeups/graphql-idor-profile-picture-deletion" target="_blank">abusing graphql idor to delete another user's profile picture</a></div>
-      <div class="meta">july 2022 | graphql · idor</div>
-    </div>
-
-    <div class="writeup-entry">
-      <div class="title">* <a href="/writeups/blind-ssrf-via-dns-rebinding" target="_blank">blind ssrf via dns rebinding</a></div>
-      <div class="meta">april 2022 | ssrf · dns rebinding</div>
-    </div>
+  <div class="entry">
+    <div class="title">  knockknock [2019]</div>
+    <div class="desc">bash script for ip/host filtering via http status codes</div>
+    <div class="link"><a href="https://github.com/anandsreekumaras/knockknock" target="_blank">github.com/anandsreekumaras/knockknock</a></div>
   </div>
 
-  <div class="block">
-    <div class="heading">tools</div>
-    <div class="rule-dash">-----</div>
-
-    <div class="tool-entry">
-      <div class="name">knockknock [2019]</div>
-      <div class="desc">bash script for ip/host filtering via http status codes</div>
-      <div class="link"><a href="https://github.com/anandsreekumaras/knockknock" target="_blank">github.com/anandsreekumaras/knockknock</a></div>
-    </div>
-
-    <div class="tool-entry">
-      <div class="name">chromeshot [2019]</div>
-      <div class="desc">headless chrome tool for visual recon</div>
-      <div class="link"><a href="https://github.com/anandsreekumaras/chromeshot" target="_blank">github.com/anandsreekumaras/chromeshot</a></div>
-    </div>
+  <div class="entry">
+    <div class="title">  chromeshot [2019]</div>
+    <div class="desc">headless chrome tool for visual recon</div>
+    <div class="link"><a href="https://github.com/anandsreekumaras/chromeshot" target="_blank">github.com/anandsreekumaras/chromeshot</a></div>
   </div>
+</div>
 
-  <div class="block">
-    <div class="heading">miscellaneous</div>
-    <div class="rule-dash">-------------</div>
-    <div class="misc-entry">* first prize, <a href="https://india.c0c0n.org/2024/" target="_blank">c0c0n 2024</a> ctf — <a href="https://www.thehindubusinessline.com/info-tech/ust-clinches-top-three-positions-in-capture-the-flag-competition-at-c0c0n-2024-cybersecurity-meet/article68918146.ece" target="_blank">news coverage</a></div>
-    <div class="misc-entry">* talk at defcon <a href="https://events.dc0471.org/dc0471-meetup-0x02/" target="_blank">dc0471 meetup 0x02</a> [september 2018] — <a href="https://www.facebook.com/dc0471/" target="_blank">event photos</a></div>
-  </div>
+<div class="block">
+  <div class="heading">miscellaneous</div>
+  <div class="rule">-------------</div>
+  <div class="misc-entry">  first prize, <a href="https://india.c0c0n.org/2024/" target="_blank">c0c0n 2024</a> ctf — <a href="https://www.thehindubusinessline.com/info-tech/ust-clinches-top-three-positions-in-capture-the-flag-competition-at-c0c0n-2024-cybersecurity-meet/article68918146.ece" target="_blank">news coverage</a></div>
+  <div class="misc-entry">  talk at defcon <a href="https://events.dc0471.org/dc0471-meetup-0x02/" target="_blank">dc0471 meetup 0x02</a> [september 2018] — <a href="https://www.facebook.com/dc0471/" target="_blank">event photos</a></div>
+</div>
 
-  <div class="block">
-    <div class="heading">contact</div>
-    <div class="rule-dash">-------</div>
-    <p><a href="mailto:mail@anandsreekumar.com">mail@anandsreekumar.com</a></p>
-  </div>
+<div class="block">
+  <div class="heading">contact</div>
+  <div class="rule">-------</div>
+  <p>  <a href="mailto:mail@anandsreekumar.com">mail@anandsreekumar.com</a></p>
+</div>
 
-  <div class="footer">
-    -----------------------------------------------------------------------<br>
-    (c) 2026 anand sreekumar · trivandrum, kerala
-  </div>
+<div class="footer">
+------------------------------------------------------------------------<br>
+(c) 2026 anand sreekumar · trivandrum, kerala
+</div>
 
 </div>
 </body>
